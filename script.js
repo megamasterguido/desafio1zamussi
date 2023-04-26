@@ -1,50 +1,80 @@
+const fs = require("fs")
 class ProductManager{
-    constructor(){
+    constructor(path){
         this.products = []
+        this.path = path
     }
 
-    getProducts(){
-        return this.products;
+    async getProducts(){
+        let resp
+        await fs.promises.readFile(this.path, "utf-8")
+            .then(res => res == "" || res == "[]"? resp = "Not found" : resp = JSON.parse(res) )
+            .catch(() => resp = "getProducts: error")
+        return resp
     }
 
-    getProductById(id){
-        let resp = this.products.find(prod => prod.id == id)
+    async getProductById(id){
+        let resp = "getProductById: error"
+        let prods
+        await fs.promises.readFile(this.path, "utf-8")
+            .then(res => prods = JSON.parse(res))
+            .catch(() => prods = "Error")
+        
+        console.log(prods)
 
-        if(resp == undefined){
-            console.error("No existe un producto con ese ID en la lista")
+        if(prods == "" || prods == "[]"){
+            resp = "Not found"
+        }
+        else if(prods == "Error"){
+            resp = "getProductById: error"
         }
         else{
-            return resp
+            resp = JSON.parse(prods)
         }
+        
+        return resp
     }
 
-    addProduct(title, description, price, thumbnail, stock){
-        let flag = false;
-        this.products.forEach(prod => {
-            if(prod.title == title && prod.description == description && prod.price == price && prod.thumbnail == thumbnail && prod.stock == stock){
-                flag = true
+    async addProduct(title, description, price, thumbnail, stock = 0){
+        let resp = "addProduct: error"
+        let vacio = await this.getProducts()
+
+        if(typeof(vacio) != "string"){
+            this.products = vacio
+
+            this.products.forEach(prod => {
+                if(prod.title == title){
+                    resp = "Ya existe un producto con esas propiedades en la lista"
+                }
+            })
+            if(resp != "Ya existe un producto con esas propiedades en la lista"){
+                this.products.push({id: this.products.length+1, title: title, description: description, price: price, thumbnail: thumbnail, stock: stock})
+                resp = this.products.length
+                fs.promises.writeFile(this.path, JSON.stringify(this.products,null,2))
             }
-        })
-        if(flag){
-            console.error("Ya existe un producto con esas propiedades en la lista")
         }
-        else{
-            this.products.push({id: this.products.length, title: title, description: description, price: price, thumbnail: thumbnail, stock: stock})
+        else if(vacio == "[]" || vacio == "getProducts: error" || vacio == "Not found" ){
+            this.products.push({id: this.products.length+1, title: title, description: description, price: price, thumbnail: thumbnail, stock: stock})
+            resp = this.products.length
+            fs.promises.writeFile(this.path, JSON.stringify(this.products,null,2))
         }
+
+        return resp
+    }
+
+    async updateProduct(id, data){
+
     }
 }
 
-let Prueba = new ProductManager()
+async function pruebas(){
+    let prueba = new ProductManager("./Productos")
+    console.log("1", await prueba.getProducts())
+    console.log("2", await prueba.getProductById(1))
+    console.log("3", await prueba.addProduct("Eje Drean Original", "Eje Drean Excellent 166 original", 12000, "https://www.serviceitalia.com.ar/images/uploads/ecommerce/1718.jpg"))
+    console.log("4", await prueba.addProduct("Eje Drean Copia", "Eje Drean Excellent 166 original", 12000, "https://www.serviceitalia.com.ar/images/uploads/ecommerce/1718.jpg"))
+    console.log("5", await prueba.getProducts())
+    console.log("6", await prueba.getProductById(1))
+}
 
-console.log(Prueba.getProducts())
-
-Prueba.addProduct("Eje Drean Punta Redonda Original", "Eje del lavarropas Drean 166 original", 10000, "https://www.serviceitalia.com.ar/images/uploads/ecommerce/1718.jpg", 100)
-console.log(Prueba.getProducts())
-Prueba.addProduct("Eje Drean Punta Redonda Original", "Eje del lavarropas Drean 166 original", 10000, "https://www.serviceitalia.com.ar/images/uploads/ecommerce/1718.jpg", 100)
-Prueba.addProduct("Eje Drean Punta Redonda Original", "Eje del lavarropas Drean 166 original", 9999, "https://www.serviceitalia.com.ar/images/uploads/ecommerce/1718.jpg", 100)
-
-Prueba.addProduct("Eje Drean Punta Redonda Copia", "Eje del lavarropas Drean 166 copia marca ACyC", 4000, "https://www.serviceitalia.com.ar/images/uploads/ecommerce/1719_3.jpg", 0)
-console.log(Prueba.getProducts())
-
-console.log(Prueba.getProductById(1))
-Prueba.getProductById(2)
+pruebas()
