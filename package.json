@@ -1,7 +1,6 @@
 {
   "name": "proyecto",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,5 +9,14 @@
   "license": "ISC",
   "dependencies": {
     "moment": "^2.29.4"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/megamasterguido/desafio1zamussi.git"
+  },
+  "bugs": {
+    "url": "https://github.com/megamasterguido/desafio1zamussi/issues"
+  },
+  "homepage": "https://github.com/megamasterguido/desafio1zamussi#readme",
+  "description": ""
 }
