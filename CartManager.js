@@ -33,6 +33,16 @@ export default class CartManager{
         return resp
     }
 
+    updateId(){
+        let resp = 0
+        this.carts.forEach(carrito => {
+            if(resp < carrito.id){
+                resp = carrito.id
+            }
+        })
+        return resp
+    }
+
     addCart(cart){
         let resp = this.lastId + 1
         for(let item in cart){
@@ -40,10 +50,11 @@ export default class CartManager{
                 resp = "addCart: error"
             }
         }
-        if(resp == this.lastId + 1){
+        if(resp != "addCart: error"){
+            this.lastId = this.updateId()
             this.lastId++
             this.carts.push({id: resp, products: cart})
-            fs.writeFileSync(this.path, this.carts)
+            fs.writeFileSync(this.path, JSON.stringify(this.carts))
         }
         return resp
     }

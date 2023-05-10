@@ -61,6 +61,16 @@ export default class ProductManager{
         return resp
     }
 
+    updateId(){
+        let resp = 0
+        this.products.forEach(prod => {
+            if(resp < prod.id){
+                resp = prod.id
+            }
+        })
+        return resp
+    }
+
     addProduct(title, description, price, thumbnail, stock = 0){
         let resp = "addProduct: error"
 
@@ -71,6 +81,8 @@ export default class ProductManager{
                     resp = "Ya existe este producto en la lista"
                 }
                 if(resp != "Ya existe este producto en la lista"){
+
+                    this.lastId = this.updateId()
                     this.lastId++
                     this.products.push({id: this.lastId, title: title, description: description, price: price, thumbnail: thumbnail, stock: stock})
                     resp = this.lastId
