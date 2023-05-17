@@ -1,8 +1,8 @@
 import { Router } from "express"
-import CartManager from "../../../CartManager.js"
+import CartManager from "../../managers/CartManager.js"
 const router = Router()
 
-let Carritos = new CartManager("./Carritos.json")
+let Carritos = new CartManager("../Carritos.json")
 
 router.get('/',(req,res)=> {
 

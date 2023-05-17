@@ -44,7 +44,7 @@ export default class CartManager{
     }
 
     addCart(cart){
-        let resp = this.lastId + 1
+        let resp
         for(let item in cart){
             if(item.id == undefined || item.quantity == undefined){
                 resp = "addCart: error"
@@ -53,8 +53,9 @@ export default class CartManager{
         if(resp != "addCart: error"){
             this.lastId = this.updateId()
             this.lastId++
+            resp = this.lastId
             this.carts.push({id: resp, products: cart})
-            fs.writeFileSync(this.path, JSON.stringify(this.carts))
+            fs.writeFileSync(this.path, JSON.stringify(this.carts,null,2))
         }
         return resp
     }
