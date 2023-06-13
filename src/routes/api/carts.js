@@ -2,7 +2,7 @@ import { Router } from "express"
 import CartManager from "../../managers/CartManager.js"
 const router = Router()
 
-let Carritos = new CartManager("../Carritos.json")
+let Carritos = new CartManager("src/Carritos.json")
 
 router.get('/',(req,res)=> {
 
@@ -22,10 +22,10 @@ router.get('/',(req,res)=> {
     response: filtrados
 })})
 
-router.get('/:pid',(req,res)=> {
+router.get('/:cid',(req,res)=> {
 
     let {cid} = req.params
-    let resp = Carritos.getCartsById(cid)
+    let resp = Carritos.getCartById(cid)
     
     if(typeof(resp) == "string"){
         res.send({
@@ -44,6 +44,28 @@ router.get('/:pid',(req,res)=> {
 router.post('/', (req, res) => {
 
     let resp = Carritos.addCart()
+
+    res.send({
+        succes: true,
+        response: resp
+    })
+})
+
+router.put("/:cid/products/:pid/:units", (req, res) => {
+    let {cid, pid, units} = req.params
+
+    let resp = Carritos.addProduct(cid, pid, +units)
+
+    res.send({
+        succes: true,
+        response: resp
+    })
+})
+
+router.delete("/:cid/products/:pid/:units", (req, res) => {
+    let {cid, pid, units} = req.params
+
+    let resp = Carritos.deleteProduct(cid, pid, +units)
 
     res.send({
         succes: true,
