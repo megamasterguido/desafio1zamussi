@@ -4,10 +4,26 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/public/styles.css">
+    <link rel="stylesheet" href={{style}}>
     <title>{{title}}</title>
 </head>
 <body class="">
+    <header>
+        <nav>
+            <a href="/">
+                Home
+            </a>
+            <a href="/products">
+                Products
+            </a>
+            <a href="/chatbot">
+                Chat
+            </a>
+            <a href="/carts">
+                Cart
+            </a>
+        </nav>
+    </header>
     {{{body}}}
 </body>
 <script src="/socket.io/socket.io.js"></script>

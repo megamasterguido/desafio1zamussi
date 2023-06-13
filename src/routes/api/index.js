@@ -1,10 +1,12 @@
 import { Router } from "express"
-import productos_router from "./productos.js"
-import carritos_router from "./carritos.js"
+import productos_router from "./products.js"
+import carritos_router from "./carts.js"
+import chat_router from "./chat.js"
 
 const router = Router()
 
-router.use('/productos', productos_router)
-router.use('/carritos', carritos_router)
+router.use('/products', productos_router)
+router.use('/carts', carritos_router)
+router.use('/chatbot', chat_router)
 
 export default router

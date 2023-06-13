@@ -9,7 +9,6 @@ let socket_server = new Server(http_server)
 socket_server.on(
     'connection',
     socket => {
-        console.log(socket)
         console.log("connected")
     }
 )

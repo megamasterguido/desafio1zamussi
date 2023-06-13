@@ -1,0 +1,16 @@
+body {
+  font-size: xx-large;
+}
+body nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  background-color: yellow;
+  color: red;
+}
+body nav a {
+  text-decoration: none;
+}
+body nav a:visited {
+  color: red;
+}/*# sourceMappingURL=styles.css.map */
