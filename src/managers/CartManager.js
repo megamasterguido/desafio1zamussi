@@ -81,15 +81,36 @@ export default class CartManager{
     addProduct(cid, pid, units){
         let resp = this.getCartById(cid)
         if(typeof(resp) != 'string'){
-            let find = resp.products.find(prod => prod.id == pid)
-            console.log("resp",resp, "producst", resp.products)
-            if(find){
-                find.units += units
+            try{
+                let prods = fs.readFileSync("src/products.json")
+                prods = JSON.parse(prods)
+                let findProd = prods.find(prod => prod.id == pid)
+                if(findProd){
+
+                    if(units > findProd.stock){
+                        resp = "addProduct: No se pueden agregar tantas unidades"
+                    }
+                    else{
+                        findProd.stock -= units
+                        let find = resp.products.find(prod => prod.id == pid)
+                        if(find){
+                            find.units += units
+                        }
+                        else{
+                            resp.products.push({id: pid, units: units})
+                        }
+                        fs.writeFileSync(this.path, JSON.stringify(this.carts,null,2))
+                        fs.writeFileSync("src/products.json", JSON.stringify(prods, null, 2))
+                    }
+                }
+                else{
+                    resp = "addProduct: Producto no encontrado"
+                }
             }
-            else{
-                resp.products.push({id: pid, units: units})
+            catch{
+                resp = "addProduct: Datos de productos irrecuperables"
             }
-            fs.writeFileSync(this.path, JSON.stringify(this.carts,null,2))
+            
         }
         else if (resp == "getCartsById: error"){
             resp = "addProduct: error"
@@ -103,14 +124,35 @@ export default class CartManager{
         
         if(typeof(resp) != 'string'){
             let find = resp.products.find(prod => prod.id == pid)
-            console.log("resp",resp, "producst", resp.products)
             if(find){
-                find.units -= units
-                if(find.units == 0){
-                    resp.products.splice(resp.products.indexOf(find),1)
+                
+                if(units > find.units){
+                    resp = "deleteProduct: No se pueden quitar tantas unidades"
                 }
+                else{
+                    find.units -= units
+
+                    try{
+                        let prods = fs.readFileSync("src/products.json")
+                        prods = JSON.parse(prods)
+                        let findProd = prods.find(prod => prod.id == pid)
+                        findProd.stock += units
+                        fs.writeFileSync("src/products.json", JSON.stringify(prods, null, 2))
+                    }
+                    catch{
+                        console.error("deleteProduct: No se pudo encontrar el articulo en la base de datos, pero se retiro igualmente del carrito.")
+                    }
+
+                    if(find.units == 0){
+                        resp.products.splice(resp.products.indexOf(find),1)
+                    }
+                    fs.writeFileSync(this.path, JSON.stringify(this.carts,null,2))
+                }
+
             }
-            fs.writeFileSync(this.path, JSON.stringify(this.carts,null,2))
+            else{
+                resp = "deleteProduct: Producto no encontrado en el carrito"
+            }
         }
         else if (resp == "getCartsById: error"){
             resp = "deleteProduct: error"
