@@ -1,11 +1,6 @@
 [
   {
     "id": 1,
-    "products": [
-      {
-        "id": "3",
-        "units": 1
-      }
-    ]
+    "products": []
   }
 ]

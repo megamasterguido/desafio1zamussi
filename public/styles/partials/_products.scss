@@ -11,30 +11,39 @@
         height: 600px;
         width: 500px;
         position: relative;
-        .product_card__id{
-            padding-inline: 5px;
-            height: 40px;
-        }
-        .product_card__title{
-            padding-inline: 10px;
-            height: 50px;
-            overflow-y: scroll;
-        }
-        .product_card__price{
-            padding-inline: 5px;
-            height: 40px;
-        }
-        img{
-            justify-self: center;
-            align-self: center;
-            max-width: 400px;
-            max-height: 275px;
-            border: solid;
-        }
-        .product_card__description{
-            padding-inline: 10px;
-            max-height: 100px;
-            overflow-y: scroll;
+        a{
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            &:visited{
+                color: black;
+            }
+
+            .product_card__id{
+                padding-inline: 5px;
+                height: 40px;
+            }
+            .product_card__title{
+                padding-inline: 10px;
+                height: 50px;
+                overflow-y: scroll;
+            }
+            .product_card__price{
+                padding-inline: 5px;
+                height: 40px;
+            }
+            img{
+                justify-self: center;
+                align-self: center;
+                max-width: 400px;
+                max-height: 275px;
+                border: solid;
+            }
+            .product_card__description{
+                padding-inline: 10px;
+                max-height: 100px;
+                overflow-y: scroll;
+            }
         }
         .add_cart{
             font-size: xx-large;
