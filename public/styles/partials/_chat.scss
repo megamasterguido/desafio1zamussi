@@ -1,0 +1,32 @@
+#chatBox{
+    max-height: 35vw;
+    overflow-y: auto;
+    scroll-behavior: auto;
+    .message{
+        margin: 0.5vw;
+        padding: 0.5vw;
+        border: solid;
+        .text{
+            padding-top: 1vw;
+            padding-left: 1vw;
+        }
+        .name{
+            color: blue;
+            font-weight: bold;
+        }
+    }
+}
+#messageBox{
+    margin: 1vw;
+    padding: 1vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    #clientMessage{
+        font-size: x-large;
+        height: 5vw;
+        width: 70vw;
+    }
+}
+
+

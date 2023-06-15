@@ -1,0 +1,26 @@
+body{
+    font-size: xx-large;
+    nav{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        background-color: yellow;
+        color: red;
+        a{
+            text-decoration: none;
+            &:visited{
+                color: red;                
+            }
+            position: relative;
+            span{
+                margin-inline: 5px;
+                padding-inline: 5px;
+                font-size: x-large;
+                position: absolute;
+                top: 0;
+                background-color: red;
+                color: yellow;
+            }
+        }
+    }
+}

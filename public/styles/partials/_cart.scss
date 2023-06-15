@@ -1,0 +1,52 @@
+main{
+    #cart{
+        padding: 1vw;
+        .cart_item{
+            padding: 1vw;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            height: 50px;
+            position: relative;
+            border: solid;
+            align-items: center;
+            .title{
+                position: absolute;
+                left: 5vw;
+            }
+            .price{
+                position: absolute;
+                right: 40vw;
+        
+            }
+            .cart_item__less{
+                font-size: xx-large;
+                position: absolute;
+                right: 27vw;
+            }
+            .units{
+                position: absolute;
+                right: 25vw;
+            }
+            .cart_item__more{
+                font-size: xx-large;
+                position: absolute;
+                right: 22vw;
+            }
+            .total_price{
+                position: absolute;
+                right: 10vw;
+            }
+            .cart_item__delete{
+                font-size: xx-large;
+            }
+        }
+    }
+    #pie_total{
+        position: absolute;
+        right: 0vw;
+        span{
+            padding-inline: 10vw;
+        }
+    }
+}

@@ -19,13 +19,15 @@
             <a href="/chatbot">
                 Chat
             </a>
-            <a href="/carts">
+            <a href="/carts" id="navCart">
                 Cart
+                <span id="navCart_cant"></span>
             </a>
         </nav>
     </header>
     {{{body}}}
+    <script src="/socket.io/socket.io.js" ></script>
+    <script src="/public/connection.js"></script>
+    <script src={{script}}></script>
 </body>
-<script src="/socket.io/socket.io.js"></script>
-<script src={{script}}></script>
 </html>

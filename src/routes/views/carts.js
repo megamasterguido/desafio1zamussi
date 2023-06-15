@@ -4,7 +4,15 @@ const router = Router()
 
 router.get('/', async(req,res,next)=> {
     try {
-        return res.render('carts',{ title:'Carrito', script: '/public/connection.js', style: "/public/styles/styles.css"})
+        return res.render('carts',{ title:'Carrito', script: '/public/cart.js', style: "/public/styles/styles.css"})
+    } catch(error) {
+        next(error)
+    }
+})
+
+router.get('/:cid', async(req,res,next)=> {
+    try {
+        return res.render('carts',{ title:'Carrito', script: '/public/cart.js', style: "/public/styles/styles.css"})
     } catch(error) {
         next(error)
     }

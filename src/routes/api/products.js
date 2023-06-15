@@ -46,7 +46,7 @@ router.get('/:pid',(req,res)=> {
 router.post('/', (req, res) => {
 
     let nuevo = req.body
-    let resp = Productos.addProduct(nuevo.title, nuevo.description, nuevo.price, nuevo.thumbnail, nuevo.stock)
+    let resp = Productos.addProduct(nuevo.title, nuevo.description, +nuevo.price, nuevo.thumbnail, +nuevo.stock)
 
     res.send({
         succes: true,

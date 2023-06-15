@@ -21,7 +21,7 @@
     "description": "Estator para motor de secarropas Kohinoor ABC 4.2-5.5.",
     "price": 9999,
     "thumbnail": "https://www.serviceitalia.com.ar/images/uploads/ecommerce/4242.jpg",
-    "stock": 10
+    "stock": 7
   },
   {
     "id": 4,
@@ -53,7 +53,7 @@
     "description": "DOBLADORA CAÑOS 0 A 90° - 1/4 - 5/16 - 3/8",
     "price": 2500,
     "thumbnail": "https://www.serviceitalia.com.ar/images/uploads/ecommerce/1666.jpg",
-    "stock": 99
+    "stock": 98
   },
   {
     "id": 8,
@@ -61,7 +61,7 @@
     "description": "Aire Split Piso/Techo On-Off Surrey 18000 Frigorias Frio Calor R410 Split Consola 617FZQ.",
     "price": 1320000,
     "thumbnail": "https://www.serviceitalia.com.ar/images/uploads/ecommerce/10819.png",
-    "stock": 1
+    "stock": 0
   },
   {
     "id": 9,
@@ -76,7 +76,7 @@
     "title": "MANIFOLD R410A",
     "description": "MANIFOLD R410A + 3 MANGUERAS 90 CM",
     "price": 30000,
-    "thumbnail": "https://www.serviceitalia.com.ar/ecommerce/herramientas-e-insumos-de-refrigeracion-3/manifold-r410a-+-3-mangueras-90-cm--2554",
-    "stock": 5
+    "thumbnail": "https://www.serviceitalia.com.ar/images/uploads/ecommerce/2829.jpg",
+    "stock": 4
   }
 ]

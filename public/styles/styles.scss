@@ -1,16 +1,5 @@
-body{
-    font-size: xx-large;
-    nav{
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        background-color: yellow;
-        color: red;
-        a{
-            text-decoration: none;
-            &:visited{
-                color: red;                
-            }
-        }
-    }
-}
+@import "partials/_nav_bar.scss";
+@import "partials/_new_product.scss";
+@import "partials/chat.scss";
+@import "partials/products.scss";
+@import "partials/cart";

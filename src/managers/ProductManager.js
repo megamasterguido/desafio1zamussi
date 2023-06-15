@@ -76,7 +76,8 @@ export default class ProductManager{
 
         if(this.ks != "Datos irrecuperables"){
 
-            if(title != undefined && description != undefined && price != undefined && thumbnail != undefined){
+            if(title != undefined && description != undefined && price != undefined && thumbnail != undefined && 
+                title != '' && description != '' && price != '' && thumbnail != ''){
                 if(this.alreadyIn(title)){
                     resp = "Ya existe este producto en la lista"
                 }
