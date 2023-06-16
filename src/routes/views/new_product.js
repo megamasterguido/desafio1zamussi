@@ -6,7 +6,7 @@ router.get(
     "/",
     async(req, res, next) => {
         try{
-            return res.render('new_product', {title: 'Nuevo Producto', script: '/public/new_product.js', style:'/public/styles/styles.css'})
+            return res.render('new_product', {title: 'Nuevo Producto', script: '/public/scripts/new_product.js', style:'/public/styles/styles.css'})
         }
         catch(error){
             next(error)

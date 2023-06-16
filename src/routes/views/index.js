@@ -7,7 +7,7 @@ import new_product_router from "./new_product.js"
 
 router.get('/', async(req,res,next)=> {
     try {
-        return res.render('index',{ title:'Inicio', script: '/public/connection.js', style: "/public/styles/styles.css"})
+        return res.render('index',{ title:'Inicio', style: "/public/styles/styles.css"})
     } catch(error) {
         next(error)
     }

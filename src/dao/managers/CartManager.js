@@ -82,7 +82,7 @@ export default class CartManager{
         let resp = this.getCartById(cid)
         if(typeof(resp) != 'string'){
             try{
-                let prods = fs.readFileSync("src/products.json")
+                let prods = fs.readFileSync("src/data/products.json")
                 prods = JSON.parse(prods)
                 let findProd = prods.find(prod => prod.id == pid)
                 if(findProd){
@@ -100,7 +100,7 @@ export default class CartManager{
                             resp.products.push({id: pid, units: units})
                         }
                         fs.writeFileSync(this.path, JSON.stringify(this.carts,null,2))
-                        fs.writeFileSync("src/products.json", JSON.stringify(prods, null, 2))
+                        fs.writeFileSync("src/data/products.json", JSON.stringify(prods, null, 2))
                     }
                 }
                 else{
@@ -133,11 +133,11 @@ export default class CartManager{
                     find.units -= units
 
                     try{
-                        let prods = fs.readFileSync("src/products.json")
+                        let prods = fs.readFileSync("src/data/products.json")
                         prods = JSON.parse(prods)
                         let findProd = prods.find(prod => prod.id == pid)
                         findProd.stock += units
-                        fs.writeFileSync("src/products.json", JSON.stringify(prods, null, 2))
+                        fs.writeFileSync("src/data/products.json", JSON.stringify(prods, null, 2))
                     }
                     catch{
                         console.error("deleteProduct: No se pudo encontrar el articulo en la base de datos, pero se retiro igualmente del carrito.")

@@ -1,8 +1,12 @@
 import { Router } from "express"
-import CartManager from "../../managers/CartManager.js"
+import CartManager from "../../dao/managers/CartManager.js"
+import carts_db from "./carts_db.js"
+
 const router = Router()
 
-let Carritos = new CartManager("src/carts.json")
+let Carritos = new CartManager("src/data/carts.json")
+
+router.use("/db", carts_db)
 
 router.get('/',(req,res)=> {
 

@@ -1,8 +1,11 @@
 import { Router } from "express"
-import ProductManager from "../../managers/ProductManager.js"
+import ProductManager from "../../dao/managers/ProductManager.js"
+import products_db from "./products_db.js"
 const router = Router()
 
-let Productos = new ProductManager("src/products.json")
+let Productos = new ProductManager("src/data/products.json")
+
+router.use('/db', products_db)
 
 router.get('/',(req,res)=> {
 
