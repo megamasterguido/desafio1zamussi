@@ -38,7 +38,7 @@ router.get('/:cid',async (req,res)=> {
         resp = await cartModel.find({_id: cid})
         res.send({
             succes: true,
-            response: resp
+            response: resp[0]
         })
     }
     catch(error){            
@@ -72,6 +72,14 @@ router.post('/', async (req, res) => {
 router.put("/:cid/products/:pid/:units", async (req, res) => {
     
     let {cid, pid, units} = req.params
+
+    await productModel.find().then(
+        resp => resp.json()
+    )
+    .then(
+        resp => console.log(resp)
+    )
+    .catch(err => console.error(err))
 
     try{
         let carrito = await cartModel.findById(cid)

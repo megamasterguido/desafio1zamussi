@@ -38,6 +38,7 @@ router.get('/:pid',
     let resp
     try{
         resp = await productModel.find({_id: pid})
+        resp = resp[0]
         res.send({
             succes: true,
             response: resp
