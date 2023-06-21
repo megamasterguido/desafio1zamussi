@@ -21,11 +21,11 @@ function update_cart(){
 
 
 async function update_cart_db(){
-    cart_db = await fetch("http://localhost:8080/api/carts/db/648bb2c828ddea6a745e4901")
+    cart_db = await fetch("http://localhost:8080/api/carts/db/648ccc29ca71f8147c552fec")
         .then(resp => resp.json())
         .then(resp => resp.response)
         .then(resp => resp.products)
-        .catch(err => console.log(err))
+        .catch(err => console.error(err))
     await socket_server.emit("cart_db_updated", cart_db.length)
 }
 
@@ -42,11 +42,11 @@ socket_server.on(
             socket_server.emit("cart_res", cart)
         })
         socket.on("cart_req_db", async () => {
-            cart_db = await fetch("http://localhost:8080/api/carts/db/648bb2c828ddea6a745e4901")
+            cart_db = await fetch("http://localhost:8080/api/carts/db/648ccc29ca71f8147c552fec")
             .then(resp => resp.json())
             .then(resp => resp.response)
             .then(resp => resp.products)
-            .catch(err => console.log(err))
+            .catch(err => console.error(err))
             socket_server.emit("cart_res_db", cart_db)
         })
         socket.on("new_message", (data) => {

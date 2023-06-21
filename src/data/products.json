@@ -21,7 +21,7 @@
     "description": "Estator para motor de secarropas Kohinoor ABC 4.2-5.5.",
     "price": 9999,
     "thumbnail": "https://www.serviceitalia.com.ar/images/uploads/ecommerce/4242.jpg",
-    "stock": 7
+    "stock": 8
   },
   {
     "id": 4,
@@ -81,10 +81,50 @@
   },
   {
     "id": 11,
-    "title": "2",
-    "description": "2",
-    "price": 2,
-    "thumbnail": "2",
-    "stock": 2
+    "title": "BIMETAL NO FROST CON FUSIBLE",
+    "description": "Detalles: Bimetalico para heladeras No Frost con fusible. Marcas compatibles: Gafa - Electrolux - Patrick - Mabe- Universal. Modelos compatibles: Modelos No Frost. Características: Con fusible. Cod:KSD 1011. Origen: Importado. ",
+    "price": 3541,
+    "thumbnail": "https://www.serviceitalia.com.ar/images/uploads/ecommerce/253.jpg",
+    "stock": 100
+  },
+  {
+    "id": 12,
+    "title": "TIMER DEFROST SAMSUNG / ELECTROLUX / SANYO / LG / GAFA ORIGINAL",
+    "description": "Detalles: Timer Defrost Samsung / Electrolux / Sanyo / Lg / Gafa Original. Timer Des-congelamiento Heladera No Frost Original. Marcas Compatibles: Samsung / Electrolux /  anyo / Lg / Gafa. Electrodomésticos compatibles: Heladeras. Tiempo: 12 Horas 10 Minutos. VAC: 230 V. Hz: 50 / 60 Hz. Modelo: TMDJX06ZX1. Marca: Nidec. Origen: Importado.",
+    "price": 4984,
+    "thumbnail": "https://www.serviceitalia.com.ar/images/uploads/ecommerce/5021_0.png",
+    "stock": 100
+  },
+  {
+    "id": 13,
+    "title": "BIMETAL Y FUSIBLE ENCAPSULADO",
+    "description": "Detalles: Bimetal y Fusible Encapsulado. Compatibilidad: Heladeras no frost. Modelos: Varios. Marcas: Varios. Origen: Importado.",
+    "price": 2222,
+    "thumbnail": "https://www.serviceitalia.com.ar/images/uploads/ecommerce/9230.jpg",
+    "stock": 100
+  },
+  {
+    "id": 14,
+    "title": "ANAQUEL BOTELLAS HELADERA GAFA 340-360-380",
+    "description": "Detalles: Estante Anaquel Para Botellas De Heladera Gafa. Modelos compatibles: 340-360-380. Marca: Gafa Medidas: 48 cm de largo, 7 cm de ancho y 11 cm de alto. Material: Acrílico. Color: Transparente. Compatibilidad: Heladeras. Origen: Nacional.",
+    "price": 6413,
+    "thumbnail": "https://www.serviceitalia.com.ar/images/uploads/ecommerce/193_0.png",
+    "stock": 100
+  },
+  {
+    "id": 15,
+    "title": "FUELLE BOSCH MAX MODELO NUEVO",
+    "description": "FUELLE PARA LAVARROPAS. MARCA: BOSCH MAX. CARACTERÍSTICAS: MODELO NUEVO.",
+    "price": 10555,
+    "thumbnail": "https://www.serviceitalia.com.ar/images/uploads/ecommerce/2203.jpg",
+    "stock": 100
+  },
+  {
+    "id": 16,
+    "title": "ELECTROVALVULA 1 VIA 180 IMPORTADO",
+    "description": "ELECTROVALVULA 1 VIA 180 IMPORTADO",
+    "price": 3042,
+    "thumbnail": "https://www.serviceitalia.com.ar/images/uploads/ecommerce/1814.jpg",
+    "stock": 100
   }
 ]

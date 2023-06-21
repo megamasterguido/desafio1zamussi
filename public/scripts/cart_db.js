@@ -30,7 +30,7 @@ function calcular_total(){
 
 async function delete_handler(id){
     let cant = +document.querySelector(`#cart_item${id} .units`).innerText
-    await fetch("http://localhost:8080/api/carts/db/648bb2c828ddea6a745e4901/products/" + id + '/' + cant, {method: "DELETE"})
+    await fetch("http://localhost:8080/api/carts/db/648ccc29ca71f8147c552fec/products/" + id + '/' + cant, {method: "DELETE"})
     .then(res => res.json())
     .then(res => res.response)
     .catch(err => console.error(err))
@@ -39,7 +39,7 @@ async function delete_handler(id){
 }
 
 async function less_handler(id){
-    await fetch("http://localhost:8080/api/carts/db/648bb2c828ddea6a745e4901/products/" + id + '/' + 1, {method: "DELETE"})
+    await fetch("http://localhost:8080/api/carts/db/648ccc29ca71f8147c552fec/products/" + id + '/' + 1, {method: "DELETE"})
     .then(res => res.json())
     .then(res => res.response)
     .catch(err => console.error(err))
@@ -48,7 +48,7 @@ async function less_handler(id){
 }
 
 async function more_handler(id){
-    await fetch("http://localhost:8080/api/carts/db/648bb2c828ddea6a745e4901/products/" + id + '/' + 1, {method: "PUT"})
+    await fetch("http://localhost:8080/api/carts/db/648ccc29ca71f8147c552fec/products/" + id + '/' + 1, {method: "PUT"})
     .then(res => res.json())
     .then(res => res.response)
     .catch(err => console.error(err))

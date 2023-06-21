@@ -73,13 +73,6 @@ router.put("/:cid/products/:pid/:units", async (req, res) => {
     
     let {cid, pid, units} = req.params
 
-    await productModel.find().then(
-        resp => resp.json()
-    )
-    .then(
-        resp => console.log(resp)
-    )
-    .catch(err => console.error(err))
 
     try{
         let carrito = await cartModel.findById(cid)

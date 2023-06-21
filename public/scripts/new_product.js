@@ -38,7 +38,6 @@ async function escuchaSubmit (){
         )
     .then(resp => resp.json())
     .then(resp => {
-        console.log(resp)
         if(typeof(resp.response) != "string"){
             alert("Articulo cargado con éxito. Será redirigido al catálogo.")
             let redi = "http://localhost:8080/products/"

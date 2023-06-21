@@ -2,7 +2,7 @@ let productos = []
 
 let loc = window.location.href
 let link = "http://localhost:8080/api/products/db"
-let link_handler = "http://localhost:8080/api/carts/db/648bb2c828ddea6a745e4901/products/"
+let link_handler = "http://localhost:8080/api/carts/db/648ccc29ca71f8147c552fec/products/"
 let flag = 0
 
 if(location == "http://localhost:8080/products" ){
