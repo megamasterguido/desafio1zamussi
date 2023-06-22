@@ -5,12 +5,6 @@ let thumbnail = document.getElementById("form__thumbnail")
 let stock = document.getElementById("form__stock")
 let submit = document.getElementById("form__submit")
 
-let flag = 0
-
-if(window.location.href == "http://localhost:8080/new_product/db"){
-    flag = 1
-}
-
 async function escuchaSubmit (){
     let nuevo = JSON.stringify({
         title: title.value,
@@ -29,10 +23,6 @@ async function escuchaSubmit (){
 
     let link = "http://localhost:8080/api/products/"
 
-    if(flag){
-        link = "http://localhost:8080/api/products/db/"
-    }
-
     await fetch(link, 
             config
         )
@@ -40,11 +30,7 @@ async function escuchaSubmit (){
     .then(resp => {
         if(typeof(resp.response) != "string"){
             alert("Articulo cargado con éxito. Será redirigido al catálogo.")
-            let redi = "http://localhost:8080/products/"
-            if(flag){
-                redi = "http://localhost:8080/products/db"
-            }
-            window.location.href = redi
+            window.location.href = "http://localhost:8080/products/"
         }
         else{
             alert(resp.response)

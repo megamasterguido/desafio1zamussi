@@ -1,80 +1,229 @@
 import { Router } from "express"
 import CartManager from "../../dao/managers/CartManager.js"
-import carts_db from "./carts_db.js"
+import { productModel } from "../../models/product.model.js"
+import { cartModel } from "../../models/cart.model.js"
 
 const router = Router()
 
 let Carritos = new CartManager("src/data/carts.json")
 
-router.use("/db", carts_db)
 
-router.get('/',(req,res)=> {
+router.get('/',async (req,res)=> {
 
     let limit = req.query.limit
     let filtrados
 
-    if(req.query.limit){
-        filtrados = Carritos.getCarts().slice(0, limit)
+    try{  
+        if(limit){
+            filtrados = await cartModel.find().limit(limit)
+        }
+        else{
+            filtrados = await cartModel.find()
     }
-    else{
-        filtrados = Carritos.getCarts()
+        res.send({
+            status: "success",
+            response: filtrados
+        })
     }
-    
+    catch(error){            
 
-    res.send({
-    succes: true,
-    response: filtrados
-})})
+        res.send({
+            status: "error",
+            error: error
+        })
+    }        
 
-router.get('/:cid',(req,res)=> {
+})
 
+router.get('/:cid',async (req,res)=> {
     let {cid} = req.params
-    let resp = Carritos.getCartById(cid)
+    let resp
+    try{
+        resp = await cartModel.find({_id: cid})
+        res.send({
+            status: "error",
+            response: resp[0]
+        })
+    }
+    catch(error){            
+
+        res.send({
+            status: "error",
+            error: error
+        })
+    }
+})
+
+router.post('/', async (req, res) => {
     
-    if(typeof(resp) == "string"){
+    let resp
+    try{
+        resp = await cartModel.create({products: []})
+        .then(resp => {
+            Carritos.addCart()
+            return resp
+        })
+        .catch(
+            err => console.error(err)
+        )
         res.send({
-        succes: false,
-        response: []
+            status: "success",
+            response: resp
         })
     }
-    else{
+    catch(error){            
+
         res.send({
-        succes: true,
-        response: resp
+            status: "error",
+            error: error
         })
     }
 })
 
-router.post('/', (req, res) => {
 
-    let resp = Carritos.addCart()
-
-    res.send({
-        succes: true,
-        response: resp
-    })
-})
-
-router.put("/:cid/products/:pid/:units", (req, res) => {
+router.put("/:cid/products/:pid/:units", async (req, res) => {
+    
     let {cid, pid, units} = req.params
 
-    let resp = Carritos.addProduct(cid, pid, +units)
 
-    res.send({
-        succes: true,
-        response: resp
-    })
+    try{
+        let carrito = await cartModel.findById(cid)
+        let prod = await productModel.findById(pid)
+        let resp
+
+        if(prod){
+            if(prod.stock < units){
+                resp = "No se pueden agregar tantas unidades"
+                res.send({
+                    status: "error",
+                    response: resp
+                })
+            }
+            else{
+                let find
+                if(carrito){
+                    find =await carrito.products.find(prod => prod.id == pid)
+                    if(find){
+                        find.units = parseInt(find.units) + parseInt(units)
+                    }
+                    else{
+                        carrito.products.push({id: pid, units: parseInt(units)})
+                    }
+                }
+                else{
+                    resp = "Carrito no encontrado"
+                    res.send({
+                        status: "error",
+                        response: resp
+                    })
+                }
+                await productModel.findByIdAndUpdate(pid,{stock: parseInt(prod.stock) - parseInt(units)})
+                resp = await cartModel.findByIdAndUpdate(cid, {
+                    products: carrito.products
+                },
+                {new: true})
+                Carritos.addProduct(cid, pid, units)
+                res.send({
+                    status: "succes",
+                    response: resp
+                })
+            }
+        }
+        else{
+            resp = "Producto no encontrado"
+            res.send({
+                status: "error",
+                response: resp
+            })
+        }
+    }
+    catch(error){            
+
+        res.send({
+            status: "error",
+            error: error
+        })
+    }
 })
 
-router.delete("/:cid/products/:pid/:units", (req, res) => {
+
+router.delete("/:cid/products/:pid/:units", async (req, res) => {
+    
     let {cid, pid, units} = req.params
 
-    let resp = Carritos.deleteProduct(cid, pid, +units)
+    try{
+        let carrito = await cartModel.findById(cid)
+        let prod = await productModel.findById(pid)
+        let resp
+        
+        if(carrito){
+            let find = carrito.products.find(item => item.id == pid)
+            if(find){
+                
+                if(find.units >= units){
+                    
+                    if(find.units == units){
+                        console.log(carrito, carrito.products.indexOf(find))
+                        carrito.products.splice(carrito.products.indexOf(find), 1)
+                        console.log(carrito)
+                    }
+                    else{
+                        carrito.products[carrito.products.indexOf(find)].units = parseInt(find.units) - parseInt(units)
+                
+                    }
+                    resp = await cartModel.findByIdAndUpdate(cid, {
+                        products: carrito.products
+                    },
+                    {new: true})
+                    Carritos.deleteProduct(cid, pid, +units)
+                    if(prod){
+                        await productModel.findByIdAndUpdate(pid,{
+                            stock: prod.stock + parseInt(units)
+                        })
+                        res.send({
+                            status: "success",
+                            response: resp
+                        })
+                    }
+                    else{
+                        resp = "No se pudo encontrar el articulo en la base de datos, pero se retiro igualmente del carrito."
+                        res.send({
+                            status: "error",
+                            response: resp
+                        })
+                    }
+                }
+                else{
+                    resp = "No hay tantas unidades del producto en el carrito"
+                    res.send({
+                        status: "error",
+                        response: resp
+                    })
+                }
+            }
+            else{
+                resp = "Producto no encontrado en el carrito"
+                res.send({
+                    status: "error",
+                    response: resp
+                })
+            }
+        }
+        else{
+            resp = "Carrito no encontrado"
+            res.send({
+                status: "error",
+                response: resp
+            })
+        }
+    }
+    catch(error){            
 
-    res.send({
-        succes: true,
-        response: resp
-    })
+        res.send({
+            status: "error",
+            error: error
+        })
+    }
 })
 
 export default router

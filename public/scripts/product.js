@@ -13,7 +13,7 @@ fetch("http://localhost:8080/api/products/"+id)
         button = document.getElementById("add_cart__button")
             button.addEventListener("click", () => {
                 input = document.getElementById("add_cart__input")
-                fetch("http://localhost:8080/api/carts/1/products/"+ id +"/"+input.value, {method: "PUT"})
+                fetch("http://localhost:8080/api/carts/648ccc29ca71f8147c552fec/products/"+ id +"/"+input.value, {method: "PUT"})
                 .then(resp => resp.json())
                 .then(resp => {
                     if(typeof(resp.response) == "string"){
@@ -31,7 +31,7 @@ fetch("http://localhost:8080/api/products/"+id)
 
 function landing(prod){
     let resp = `<div class="product">
-    <div class="product_card__id">ID: ${prod.id}</div>
+    <div class="product_card__id">ID: ${prod._id}</div>
     <div class="product_card__title">${prod.title}</div>
     <div class="lateral">
         <img src="${prod.thumbnail}" alt="Miniatura del producto" class="product_card__thumbnail">

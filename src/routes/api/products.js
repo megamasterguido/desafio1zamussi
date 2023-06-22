@@ -1,83 +1,144 @@
 import { Router } from "express"
 import ProductManager from "../../dao/managers/ProductManager.js"
-import products_db from "./products_db.js"
+import { productModel } from "../../models/product.model.js"
 const router = Router()
 
 let Productos = new ProductManager("src/data/products.json")
 
-router.use('/db', products_db)
+router.get('/',
+    async (req,res) => {
 
-router.get('/',(req,res)=> {
+    let page = req.query.page ?? 1
+    let limit = req.query.limit ?? 6
+    let title = new RegExp(req.query.title, 'i') ?? ''
+    let filtrados
 
-        let limit = req.query.limit
-        let filtrados
-
-        if(req.query.limit){
-            filtrados = Productos.getProducts().slice(0, limit)
-        }
-        else{
-            filtrados = Productos.getProducts()
-        }
-        
+    try{
+        filtrados = await productModel.paginate(
+            {title},
+            {limit, page})
+        res.send({
+            status: "success",
+            response: filtrados
+        })
+    }
+    catch(error){            
 
         res.send({
-        succes: true,
-        response: filtrados
+            status: "error",
+            error: error
         })
+    }        
+}
+)
+
+router.get('/:pid',
+    async (req,res)=> {
+
+    let {pid} = req.params
+    let resp
+    try{
+        resp = await productModel.find({_id: pid})
+        resp = resp[0]
+        res.send({
+            status: "success",
+            response: resp
+        })
+    }
+    catch(error){            
+
+        res.send({
+            status: "error",
+            error: error
+        })
+    }
+})
+
+router.post('/',
+    async (req, res) => {
+        let {title, description, price, thumbnail, stock} = req.body
+        try{
+            let resp = await productModel.create({
+                title,
+                description,
+                price,
+                thumbnail,
+                stock
+            }).then( resp => {
+                Productos.addProduct(
+                    resp._id,
+                    title, 
+                    description,
+                    price,
+                    thumbnail,
+                    stock)
+                return resp
+            }).catch(err => console.error(err))
+
+            res.send({
+                status: "success",
+                response:resp
+            })
+
+        }
+        catch(error){            
+
+            res.send({
+                status: "error",
+                error: error
+            })
+        }
+        
     }
 )
 
-router.get('/:pid',(req,res)=> {
-
-    let {pid} = req.params
-    let resp = Productos.getProductById(pid)
-    
-    if(typeof(resp) == "string"){
-        res.send({
-        succes: false,
-        response: []
-        })
-    }
-    else{
-        res.send({
-        succes: true,
-        response: resp
-        })
-    }
-})
-
-router.post('/', (req, res) => {
-
-    let nuevo = req.body
-    let resp = Productos.addProduct(nuevo.title, nuevo.description, +nuevo.price, nuevo.thumbnail, +nuevo.stock)
-
-    res.send({
-        succes: true,
-        response: resp
-    })
-})
-
-router.put('/:pid', (req, res) => {
+router.put('/:pid', async (req, res) => {
 
     let {pid} = req.params
     let nuevo = req.body
-    let resp = Productos.updateProduct(pid, nuevo)
+    let resp = {before: '', after: ''}
 
-    res.send({
-        succes: true,
-        response: resp
-    })
+    try{
+        let prod = Productos.updateProduct(pid, nuevo)
+        let one = await productModel.findByIdAndUpdate(pid, nuevo)
+        resp.before = one
+        one = await productModel.find({_id: pid})
+        resp.after = one
+        res.send({
+            status: "success",
+            response : resp
+        })
+
+        }
+        catch(error){            
+
+            res.send({
+                status: "error",
+                error: error
+            })
+        }
 })
 
-router.delete('/:pid', (req, res) => {
+router.delete('/:pid', async (req, res) => {
 
     let {pid} = req.params
-    let resp = Productos.deleteProduct(pid)
 
-    res.send({
-        succes: true,
-        response: resp
-    })
+    try{
+        let prod = Productos.deleteProduct(pid)
+        await productModel.findByIdAndDelete(pid)
+        res.send({
+            status: "success",
+            response : "Producto eliminado"
+        })
+    }
+
+    catch(error){            
+
+        res.send({
+            status: "error",
+            error: error
+        })
+    }
 })
 
 export default router

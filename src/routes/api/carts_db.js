@@ -17,7 +17,7 @@ router.get('/',async (req,res)=> {
             filtrados = await cartModel.find()
     }
         res.send({
-            succes: true,
+            status: "success",
             response: filtrados
         })
     }
@@ -37,7 +37,7 @@ router.get('/:cid',async (req,res)=> {
     try{
         resp = await cartModel.find({_id: cid})
         res.send({
-            succes: true,
+            status: "success",
             response: resp[0]
         })
     }
@@ -55,8 +55,15 @@ router.post('/', async (req, res) => {
     let resp
     try{
         resp = await cartModel.create({products: []})
+        .then(resp => {
+            Carritos.addCart()
+            return resp
+        })
+        .catch(
+            err => console.error(err)
+        )
         res.send({
-            succes: true,
+            status: "success",
             response: resp
         })
     }
@@ -108,10 +115,16 @@ router.put("/:cid/products/:pid/:units", async (req, res) => {
                 await productModel.findByIdAndUpdate(pid,{stock: parseInt(prod.stock) - parseInt(units)})
                 resp = await cartModel.findByIdAndUpdate(cid, {
                     products: carrito.products
-                },
+                }
+                ,
                 {new: true})
+                .then( resp => {
+                    Carritos.addProduct(cid, pid, +units)
+                    return resp
+                })
+                .catch(err => console.error(err))
                 res.send({
-                    succes: true,
+                    status: "succes",
                     response: resp
                 })
             }
@@ -159,6 +172,15 @@ router.delete("/:cid/products/:pid/:units", async (req, res) => {
                         products: carrito.products
                     },
                     {new: true})
+                    .then( resp => {
+                        Carritos.deleteProduct(cid, pid, +units)
+                        return resp
+                    })
+                    .catch(err => console.error(err))
+                    res.send({
+                        status: "succes",
+                        response: resp
+                    })
                     
                     if(prod){
                         await productModel.findByIdAndUpdate(pid,{
@@ -176,9 +198,6 @@ router.delete("/:cid/products/:pid/:units", async (req, res) => {
                             response: resp
                         })
                     }
-
-                    
-
                 }
                 else{
                     resp = "No hay tantas unidades del producto en el carrito"

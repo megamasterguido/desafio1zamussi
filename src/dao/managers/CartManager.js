@@ -17,8 +17,8 @@ export default class CartManager{
                 this.carts = JSON.parse(archivo)
                 resp = "Datos recuperados"
                 for(const cart in this.carts){
-                    if(cart.id >= this.lastId){
-                        this.lastId = cart.id+1
+                    if(cart._id >= this.lastId){
+                        this.lastId = cart._id+1
                     }
                 }
             }
@@ -33,20 +33,10 @@ export default class CartManager{
         return resp
     }
 
-    updateId(){
-        let resp = 0
-        this.carts.forEach(carrito => {
-            if(resp < carrito.id){
-                resp = carrito.id
-            }
-        })
-        return resp
-    }
-
-    addCart(cart = []){
+    addCart(){
         let resp
         for(let item in cart){
-            if(item.id == undefined || item.quantity == undefined){
+            if(item._id == undefined || item.quantity == undefined){
                 resp = "addCart: error"
             }
         }
@@ -54,7 +44,7 @@ export default class CartManager{
             this.lastId = this.updateId()
             this.lastId++
             resp = this.lastId
-            this.carts.push({id: resp, products: cart})
+            this.carts.push({_id: resp, products: cart})
             fs.writeFileSync(this.path, JSON.stringify(this.carts,null,2))
         }
         return resp
@@ -70,7 +60,7 @@ export default class CartManager{
 
     getCartById(id){
         let resp = "getCartsById: error"
-        let find = this.carts.find(cart => cart.id == id)
+        let find = this.carts.find(cart => cart._id == id)
         if(this.ks != "Datos irrecuperables"){
             find == undefined? resp = "Not found" : resp = find
         }
@@ -84,20 +74,20 @@ export default class CartManager{
             try{
                 let prods = fs.readFileSync("src/data/products.json")
                 prods = JSON.parse(prods)
-                let findProd = prods.find(prod => prod.id == pid)
+                let findProd = prods.find(prod => prod._id == pid)
                 if(findProd){
 
                     if(units > findProd.stock){
                         resp = "addProduct: No se pueden agregar tantas unidades"
                     }
                     else{
-                        findProd.stock -= units
-                        let find = resp.products.find(prod => prod.id == pid)
+                        findProd.stock -= +units
+                        let find = resp.products.find(prod => prod._id == pid)
                         if(find){
-                            find.units += units
+                            find.units += +units
                         }
                         else{
-                            resp.products.push({id: pid, units: units})
+                            resp.products.push({_id: pid, units: +units})
                         }
                         fs.writeFileSync(this.path, JSON.stringify(this.carts,null,2))
                         fs.writeFileSync("src/data/products.json", JSON.stringify(prods, null, 2))
@@ -123,7 +113,7 @@ export default class CartManager{
         let resp = this.getCartById(cid)
         
         if(typeof(resp) != 'string'){
-            let find = resp.products.find(prod => prod.id == pid)
+            let find = resp.products.find(prod => prod._id == pid)
             if(find){
                 
                 if(units > find.units){
@@ -135,7 +125,7 @@ export default class CartManager{
                     try{
                         let prods = fs.readFileSync("src/data/products.json")
                         prods = JSON.parse(prods)
-                        let findProd = prods.find(prod => prod.id == pid)
+                        let findProd = prods.find(prod => prod._id == pid)
                         findProd.stock += units
                         fs.writeFileSync("src/data/products.json", JSON.stringify(prods, null, 2))
                     }

@@ -1,8 +1,5 @@
 import { Router } from "express"
-import carts_db from "./carts_db.js"
 const router = Router()
-
-router.use('/db', carts_db)
 
 router.get('/', async(req,res,next)=> {
     try {

@@ -141,13 +141,22 @@ main #cart .cart_item {
   border: solid;
   align-items: center;
 }
+main #cart .cart_item .id {
+  overflow-x: scroll;
+  max-width: 10vw;
+}
 main #cart .cart_item .title {
+  display: inline;
   position: absolute;
-  left: 5vw;
+  left: 15vw;
+  overflow-x: scroll;
+  max-width: 30vw;
 }
 main #cart .cart_item .price {
   position: absolute;
   right: 40vw;
+  max-width: 10vw;
+  overflow-x: scroll;
 }
 main #cart .cart_item .cart_item__less {
   font-size: xx-large;
@@ -166,54 +175,10 @@ main #cart .cart_item .cart_item__more {
 main #cart .cart_item .total_price {
   position: absolute;
   right: 10vw;
+  max-width: 10vw;
+  overflow-x: scroll;
 }
 main #cart .cart_item .cart_item__delete {
-  font-size: xx-large;
-}
-main #cart .cart_item_db {
-  padding: 1vw;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  height: 50px;
-  position: relative;
-  border: solid;
-  align-items: center;
-}
-main #cart .cart_item_db .id {
-  overflow-x: scroll;
-  max-width: 10vw;
-}
-main #cart .cart_item_db .title {
-  display: inline;
-  position: absolute;
-  left: 15vw;
-  overflow-x: scroll;
-  max-width: 30vw;
-}
-main #cart .cart_item_db .price {
-  position: absolute;
-  right: 40vw;
-}
-main #cart .cart_item_db .cart_item__less {
-  font-size: xx-large;
-  position: absolute;
-  right: 27vw;
-}
-main #cart .cart_item_db .units {
-  position: absolute;
-  right: 25vw;
-}
-main #cart .cart_item_db .cart_item__more {
-  font-size: xx-large;
-  position: absolute;
-  right: 22vw;
-}
-main #cart .cart_item_db .total_price {
-  position: absolute;
-  right: 10vw;
-}
-main #cart .cart_item_db .cart_item__delete {
   font-size: xx-large;
 }
 main #pie_total {
