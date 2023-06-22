@@ -62,6 +62,25 @@ form {
   width: 70vw;
 }
 
+#search_box {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 1vw;
+}
+#search_box input {
+  height: 2vw;
+  padding-inline: 1vw;
+  margin-inline: 1vw;
+  font-size: x-large;
+}
+#search_box button {
+  font-size: x-large;
+  height: 2vw;
+  padding-inline: 1vw;
+  margin-inline: 1vw;
+}
+
 #products {
   display: flex;
   flex-wrap: wrap;
@@ -126,6 +145,19 @@ form {
   font-size: xx-large;
   height: 40px;
   max-width: 300px;
+}
+
+#pages {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 1vw;
+  font-size: xx-large;
+}
+#pages button {
+  font-size: xx-large;
+  padding: 1vw;
+  margin: 1vw;
 }
 
 main #cart {

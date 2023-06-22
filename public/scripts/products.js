@@ -10,12 +10,7 @@ let buscar = document.getElementById("products__search_button")
 let products_box = document.getElementById("products")
 
 function busqueda(){
-    if(titulo.value != ''){
-        obtener_productos(link + '?title=' + titulo.value + "&page=" + page)
-    }
-    else(
-        obtener_productos(link)
-    )
+    obtener_productos(link + '?title=' + titulo.value + "&page=" + page)
 }
 
 buscar.addEventListener("click", busqueda)
@@ -29,7 +24,6 @@ async function obtener_productos(link){
     .then(() => productos = pagina.docs)
     .then(() => products_box.innerHTML += productos.map(card).join(''))
     .then(() => {
-        pages()
 
         for(let i = 0; i <productos.length; i++){
             let cod = productos[i]._id
@@ -49,6 +43,8 @@ async function obtener_productos(link){
                 .catch(err => console.error(err))
             })
         }
+        
+        pages()
     })
 
 }
@@ -75,14 +71,57 @@ function card (prod){
 function pages (){
     let prev = `<button id="prev"><-</button>`
     let next = `<button id="next">-></button>`
+    let first = `<button id="first"><<</button>`
+    let last = `<button id="last">>></button>`
 
     let botones = document.getElementById("pages")
+    botones.innerHTML = ''
+    let totalpages = pagina.totalPages
+
     if(pagina.prevPage){
+        botones.innerHTML += first
         botones.innerHTML += prev
     }
+
+    botones.innerHTML += '<div id="pages__nums"></div>'
+    let botonera = document.getElementById("pages__nums")
+
+    let min = page-3<1? 1: page-3
+
+    for(let i = min ; i < page; i++){
+        botonera.innerHTML += `<button class="page_button">${i}</button>`
+    }
+
+    botonera.innerHTML += page
+
+    let max = (+page+3 > totalpages) ? totalpages : +page+3
+
+    for(let j = +page + 1; j <= max; j++){
+        botonera.innerHTML += `<button class="page_button">${j}</button>`
+    }
+
     if(pagina.nextPage){
         botones.innerHTML += next
+        botones.innerHTML += last
+        document.getElementById("last").addEventListener("click", () => {page = totalpages; busqueda()})
+    
     }
+    
+    let back = document.getElementById("prev")
+    if(back){
+        back.addEventListener("click", () => {page--; busqueda()})
+        document.getElementById("first").addEventListener("click", () => {page = 1; busqueda()})
+    }
+
+    let forward = document.getElementById("next")
+    if(forward){
+        forward.addEventListener("click", () => {page = +page+1; busqueda()})
+    }
+
+    let page_buttons = Array.from(document.getElementsByClassName("page_button"))
+    page_buttons.forEach(boton => {
+        boton.addEventListener("click", ()=>{page = +boton.innerHTML; busqueda()})
+    });
 }
 
 obtener_productos(link)

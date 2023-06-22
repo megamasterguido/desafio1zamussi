@@ -1,3 +1,21 @@
+#search_box{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 1vw;
+    input{
+        height: 2vw;
+        padding-inline: 1vw;
+        margin-inline: 1vw;
+        font-size: x-large;
+    }
+    button{
+        font-size: x-large;
+        height: 2vw;
+        padding-inline: 1vw;
+        margin-inline: 1vw;
+    }
+}
 #products{
     display: flex;
     flex-wrap: wrap;
@@ -62,5 +80,18 @@
                 max-width: 300px;
             }
         }
+    }
+}
+
+#pages{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 1vw;
+    font-size: xx-large;
+    button{
+        font-size: xx-large;
+        padding: 1vw;
+        margin: 1vw;
     }
 }
