@@ -2,11 +2,37 @@ import { Router } from "express"
 import CartManager from "../../dao/managers/CartManager.js"
 import { productModel } from "../../models/product.model.js"
 import { cartModel } from "../../models/cart.model.js"
+import {Types} from 'mongoose'
 
 const router = Router()
 
 let Carritos = new CartManager("src/data/carts.json")
 
+
+router.get(
+    '/bills/:cid',
+    async (req, res) => {
+        try{
+            let resp = await cartModel.aggregate([
+                {$match: {_id: new Types.ObjectId(req.params.cid)}},
+                {$project: {_id:1,"products._id": 1, "products.units": 1}},
+                {$set: {"products.price": 0}},
+                {$lookup:{foreignField:'_id', from: 'products', localField:'products._id', as:"productos"}},
+                {$replaceRoot:{newRoot:{$mergeObjects:[{$arrayElemAt:['$produtos', 0]}, "$$ROOT"]}}}
+            ])
+            res.send({
+                status: "success",
+                response: resp
+            })
+        }
+        catch(error){
+            res.send({
+                status: "error",
+                error: error
+            })
+        }
+    }
+)
 
 router.get('/',async (req,res)=> {
 
@@ -15,10 +41,10 @@ router.get('/',async (req,res)=> {
 
     try{  
         if(limit){
-            filtrados = await cartModel.find().limit(limit)
+            filtrados = await cartModel.find().limit(limit).populate('products._id')
         }
         else{
-            filtrados = await cartModel.find()
+            filtrados = await cartModel.find().populate('products._id')
     }
         res.send({
             status: "success",
@@ -39,9 +65,13 @@ router.get('/:cid',async (req,res)=> {
     let {cid} = req.params
     let resp
     try{
-        resp = await cartModel.find({_id: cid})
+        resp = await cartModel.find({_id: cid}).populate({path:'products._id'})
+        resp[0].products.sort(
+            function(a,b){
+                return a._id.title > b._id.title ? 1: -1
+            })
         res.send({
-            status: "error",
+            status: "success",
             response: resp[0]
         })
     }
@@ -107,7 +137,7 @@ router.put("/:cid/products/:pid/:units", async (req, res) => {
                         find.units = parseInt(find.units) + parseInt(units)
                     }
                     else{
-                        carrito.products.push({id: pid, units: parseInt(units)})
+                        carrito.products.push({_id: pid, units: parseInt(units)})
                     }
                 }
                 else{

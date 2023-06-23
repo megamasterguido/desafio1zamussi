@@ -4,12 +4,12 @@ socket.on("cart_res", async (data) => {
     carrito.innerHTML = ''
 
     for(let i = 0; i < data.length; i++){
-        const cod = data[i].id
+        const cod = data[i]._id._id
         carrito.innerHTML += await cart_item(data[i])
     }
 
     data.forEach(async function(element){
-        const cod = element.id
+        const cod = element._id._id
 
         const less = document.getElementById(`cart_item__less${cod}`)
         const more = document.getElementById(`cart_item__more${cod}`)
@@ -65,21 +65,21 @@ async function more_handler(id){
 }
 
 async function cart_item(item){
-    let prod = await fetch("http://localhost:8080/api/products/"+item.id)
+    let prod = await fetch("http://localhost:8080/api/products/"+item._id._id)
     .then(res => res.json())
     .then(res => res.response)
     .catch(err => console.error(err))
 
     let resp = `
-    <div class="cart_item" id="cart_item${item.id}">
-        <div class="id">${item.id}</div>
+    <div class="cart_item" id="cart_item${item._id._id}">
+        <div class="id">${item._id._id}</div>
         <div class="title">${prod.title}</div>
         <div class="price">$${prod.price}</div>
-        <button class="cart_item__less" id="cart_item__less${item.id}"> - </button>
+        <button class="cart_item__less" id="cart_item__less${item._id._id}"> - </button>
         <div class="units">${item.units}</div>
-        <button class="cart_item__more" id="cart_item__more${item.id}"> + </button>
+        <button class="cart_item__more" id="cart_item__more${item._id._id}"> + </button>
         <div class="total_price">$${prod.price * item.units}</div>
-        <button class="cart_item__delete" id="cart_item__delete${item.id}"> X </button>
+        <button class="cart_item__delete" id="cart_item__delete${item._id._id}"> X </button>
     </div>`
 
     return resp
