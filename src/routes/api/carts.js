@@ -15,10 +15,21 @@ router.get(
         try{
             let resp = await cartModel.aggregate([
                 {$match: {_id: new Types.ObjectId(req.params.cid)}},
-                {$project: {_id:1,"products._id": 1, "products.units": 1}},
-                {$set: {"products.price": 0}},
-                {$lookup:{foreignField:'_id', from: 'products', localField:'products._id', as:"productos"}},
-                {$replaceRoot:{newRoot:{$mergeObjects:[{$arrayElemAt:['$produtos', 0]}, "$$ROOT"]}}}
+                {$unwind: "$products"},
+                {$lookup:{
+                    from:"products",
+                    localField:"products._id",
+                    foreignField:"_id",
+                    as:"product"
+                }},
+                {$unwind:"$product"},
+                {$set:{
+                    total:{$multiply:["$products.units", "$product.price"]}
+                }},
+                {$group:{
+                    _id:"$_id",
+                    total:{$sum:"$total"}
+                }}
             ])
             res.send({
                 status: "success",
