@@ -4,7 +4,6 @@ socket.on("cart_res", async (data) => {
     carrito.innerHTML = ''
 
     for(let i = 0; i < data.length; i++){
-        const cod = data[i]._id._id
         carrito.innerHTML += await cart_item(data[i])
     }
 
@@ -19,21 +18,18 @@ socket.on("cart_res", async (data) => {
         more.addEventListener("click", async () => await more_handler(cod))
         del.addEventListener("click", async () => await delete_handler(cod))
     });
-    calcular_total()
+    await calcular_total()
     socket.emit("cart_update")
 })
 
-let total = document.getElementById("total")
-let monto = 0
 
-function calcular_total(){
-    let cant = document.querySelectorAll(`.cart_item .total_price`)
-    monto = 0
-    for(let i = 0 ; i < cant.length; i++){
-        monto += +cant[i].innerText.substring(1)
-    }
+async function calcular_total(){
+    
+    let total = document.getElementById("total")
+    await fetch("http://localhost:8080/api/carts/bills/648ccc29ca71f8147c552fec")
+        .then(resp=>resp.json())
+        .then(resp => total.innerText = '$' + resp.response[0].total)
 
-    total.innerText = '$' + monto
 }
 
 async function delete_handler(id){
