@@ -4,6 +4,7 @@ import products_router from "./products.js"
 import chat_router from "./chat.js"
 import carts_router from "./carts.js"
 import new_product_router from "./new_product.js"
+import user_router from "./auth.js"
 
 router.get('/', async(req,res,next)=> {
     try {
@@ -17,5 +18,6 @@ router.use("/products", products_router)
 router.use("/chatbot", chat_router)
 router.use("/carts", carts_router)
 router.use("/new_product", new_product_router)
+router.use("/auth", user_router)
 
 export default router

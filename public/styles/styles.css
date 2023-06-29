@@ -257,4 +257,22 @@ main #pie_total span {
 }
 .product .abajo .add_cart button {
   font-size: xx-large;
+}
+
+#user_session {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+}
+#user_session a {
+  color: black;
+  border: solid;
+  margin: 1vw;
+  text-decoration: none;
+}
+#user_session a:hover {
+  background-color: red;
+}
+#user_session a:visited {
+  color: black;
 }/*# sourceMappingURL=styles.css.map */

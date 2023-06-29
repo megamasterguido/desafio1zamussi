@@ -1,14 +1,14 @@
 import app from "./app.js";
 import { Server } from "socket.io";
-import fs from "fs";
 import mongoose from "mongoose";
+import 'dotenv/config.js'
 
-const puerto = 8080
+const puerto = process.env.PORT || 8080
 
 let http_server = app.listen(puerto)
 let socket_server = new Server(http_server)
 
-mongoose.connect("mongodb+srv://megamasterguido:megamasterguido1611@coderhouse.ha2xgah.mongodb.net/?retryWrites=true&w=majority")
+mongoose.connect(process.env.LINK_MONGO)
 
 let chat = []
 let cart
