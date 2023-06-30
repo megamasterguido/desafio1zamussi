@@ -7,7 +7,7 @@ const userSchema = new Schema({
     photo: {type: String, default:'https://www.logolynx.com/images/logolynx/03/039b004617d1ef43cf1769aae45d6ea2.png'},
     mail: {type: String, index: true, required: true, unique: true},
     age: Number,
-    role: {type: Number, default: 0},
+    role: {type: Number, enum: [0,1], default: 0},
     password: {type: String, required: true}
 })
 

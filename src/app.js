@@ -24,7 +24,7 @@ app.use(cookieParser())
 app.use(expressSession({
     store: mongoStore.create({
         mongoUrl: process.env.LINK_MONGO,
-        ttl:10000
+        ttl: 300
     }),           
     secret: process.env.SECRET_SESSION,
     resave: true,

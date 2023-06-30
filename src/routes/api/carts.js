@@ -31,13 +31,13 @@ router.get(
                     total:{$sum:"$total"}
                 }}
             ])
-            res.send({
+            return res.json({
                 status: "success",
                 response: resp
             })
         }
         catch(error){
-            res.send({
+            return res.json({
                 status: "error",
                 error: error
             })
@@ -57,14 +57,14 @@ router.get('/',async (req,res)=> {
         else{
             filtrados = await cartModel.find().populate('products._id')
     }
-        res.send({
+        return res.json({
             status: "success",
             response: filtrados
         })
     }
     catch(error){            
 
-        res.send({
+        return res.json({
             status: "error",
             error: error
         })
@@ -81,14 +81,14 @@ router.get('/:cid',async (req,res)=> {
             function(a,b){
                 return a._id.title > b._id.title ? 1: -1
             })
-        res.send({
+        return res.json({
             status: "success",
             response: resp[0]
         })
     }
     catch(error){            
 
-        res.send({
+        return res.json({
             status: "error",
             error: error
         })
@@ -107,14 +107,14 @@ router.post('/', async (req, res) => {
         .catch(
             err => console.error(err)
         )
-        res.send({
+        return res.json({
             status: "success",
             response: resp
         })
     }
     catch(error){            
 
-        res.send({
+        return res.json({
             status: "error",
             error: error
         })
@@ -135,7 +135,7 @@ router.put("/:cid/products/:pid/:units", async (req, res) => {
         if(prod){
             if(prod.stock < units){
                 resp = "No se pueden agregar tantas unidades"
-                res.send({
+                return res.json({
                     status: "error",
                     response: resp
                 })
@@ -153,7 +153,7 @@ router.put("/:cid/products/:pid/:units", async (req, res) => {
                 }
                 else{
                     resp = "Carrito no encontrado"
-                    res.send({
+                    return res.json({
                         status: "error",
                         response: resp
                     })
@@ -164,7 +164,7 @@ router.put("/:cid/products/:pid/:units", async (req, res) => {
                 },
                 {new: true})
                 Carritos.addProduct(cid, pid, units)
-                res.send({
+                return res.json({
                     status: "succes",
                     response: resp
                 })
@@ -172,7 +172,7 @@ router.put("/:cid/products/:pid/:units", async (req, res) => {
         }
         else{
             resp = "Producto no encontrado"
-            res.send({
+            return res.json({
                 status: "error",
                 response: resp
             })
@@ -180,7 +180,7 @@ router.put("/:cid/products/:pid/:units", async (req, res) => {
     }
     catch(error){            
 
-        res.send({
+        return res.json({
             status: "error",
             error: error
         })
@@ -204,9 +204,7 @@ router.delete("/:cid/products/:pid/:units", async (req, res) => {
                 if(find.units >= units){
                     
                     if(find.units == units){
-                        console.log(carrito, carrito.products.indexOf(find))
                         carrito.products.splice(carrito.products.indexOf(find), 1)
-                        console.log(carrito)
                     }
                     else{
                         carrito.products[carrito.products.indexOf(find)].units = parseInt(find.units) - parseInt(units)
@@ -221,14 +219,14 @@ router.delete("/:cid/products/:pid/:units", async (req, res) => {
                         await productModel.findByIdAndUpdate(pid,{
                             stock: prod.stock + parseInt(units)
                         })
-                        res.send({
+                        return res.json({
                             status: "success",
                             response: resp
                         })
                     }
                     else{
                         resp = "No se pudo encontrar el articulo en la base de datos, pero se retiro igualmente del carrito."
-                        res.send({
+                        return res.json({
                             status: "error",
                             response: resp
                         })
@@ -236,7 +234,7 @@ router.delete("/:cid/products/:pid/:units", async (req, res) => {
                 }
                 else{
                     resp = "No hay tantas unidades del producto en el carrito"
-                    res.send({
+                    return res.json({
                         status: "error",
                         response: resp
                     })
@@ -244,7 +242,7 @@ router.delete("/:cid/products/:pid/:units", async (req, res) => {
             }
             else{
                 resp = "Producto no encontrado en el carrito"
-                res.send({
+                return res.json({
                     status: "error",
                     response: resp
                 })
@@ -252,7 +250,7 @@ router.delete("/:cid/products/:pid/:units", async (req, res) => {
         }
         else{
             resp = "Carrito no encontrado"
-            res.send({
+            return res.json({
                 status: "error",
                 response: resp
             })
@@ -260,7 +258,7 @@ router.delete("/:cid/products/:pid/:units", async (req, res) => {
     }
     catch(error){            
 
-        res.send({
+        return res.json({
             status: "error",
             error: error
         })

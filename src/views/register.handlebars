@@ -1,22 +1,37 @@
 <main>
     <form id="register_form">
-        <label for="register_form__name">Nombre</label>
-        <input id="register_form__name" type="text">
-        <label for="register_form__photo">Foto</label>
-        <input id="register_form__photo" type="text" placeholder="No obligatorio">
-        <label for="register_form__mail">Mail</label>
-        <input id="register_form__mail" type="text">
-        <label for="register_form__age">Edad</label>
-        <input id="register_form__age" type="number" min="0">
-        <label for="register_form__role" >Role</label>
-        <input id="register_form__role" list="roles" placeholder="No obligatorio">
-        <datalist id="roles">
-            <option value="0">Usuario</option>
-            <option value="1">Administrador</option>
-        </datalist>
-        <label for="register_form__password">Contraseña</label>
-        <input id="register_form__password" type="text" placeholder="No obligatorio">
-        <label for="register_form__repeat_password">Repita su contraseña</label>
-        <input id="register_form__repeat_password" type="text">
+        <div>
+            <label for="register_form__name">Nombre</label>
+            <input id="register_form__name" type="text">
+        </div>
+        <div>
+            <label for="register_form__photo">Foto</label>
+            <input id="register_form__photo" type="text" placeholder="No obligatorio">
+        </div>
+        <div>
+            <label for="register_form__mail">Mail</label>
+            <input id="register_form__mail" type="text">
+        </div>
+        <div>
+            <label for="register_form__age">Edad</label>
+            <input id="register_form__age" type="number" min="0">
+        </div>
+        <div>
+            <label for="register_form__role" >Role</label>
+            <input id="register_form__role" list="roles" placeholder="No obligatorio">
+            <datalist id="roles">
+                <option value="0">Usuario</option>
+                <option value="1">Administrador</option>
+            </datalist>
+        </div>
+        <div>
+            <label for="register_form__password">Contraseña</label>
+            <input id="register_form__password" type="password">
+        </div>
+        <div>
+            <label for="register_form__repeat_password">Repita su contraseña</label>
+            <input id="register_form__repeat_password" type="password">
+        </div>
     </form>
+    <button id="register_form__button"> Registrarse </button>
 </main>

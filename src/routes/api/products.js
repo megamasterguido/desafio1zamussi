@@ -17,14 +17,14 @@ router.get('/',
         filtrados = await productModel.paginate(
             {title},
             {limit, page})
-        res.send({
+        return res.json({
             status: "success",
             response: filtrados
         })
     }
     catch(error){            
 
-        res.send({
+        return res.json({
             status: "error",
             error: error
         })
@@ -40,14 +40,14 @@ router.get('/:pid',
     try{
         resp = await productModel.find({_id: pid})
         resp = resp[0]
-        res.send({
+        return res.json({
             status: "success",
             response: resp
         })
     }
     catch(error){            
 
-        res.send({
+        return res.json({
             status: "error",
             error: error
         })
@@ -75,7 +75,7 @@ router.post('/',
                 return resp
             }).catch(err => console.error(err))
 
-            res.send({
+            return res.json({
                 status: "success",
                 response:resp
             })
@@ -83,7 +83,7 @@ router.post('/',
         }
         catch(error){            
 
-            res.send({
+            return res.json({
                 status: "error",
                 error: error
             })
@@ -104,7 +104,7 @@ router.put('/:pid', async (req, res) => {
         resp.before = one
         one = await productModel.find({_id: pid})
         resp.after = one
-        res.send({
+        return res.json({
             status: "success",
             response : resp
         })
@@ -112,7 +112,7 @@ router.put('/:pid', async (req, res) => {
         }
         catch(error){            
 
-            res.send({
+            return res.json({
                 status: "error",
                 error: error
             })
@@ -126,7 +126,7 @@ router.delete('/:pid', async (req, res) => {
     try{
         let prod = Productos.deleteProduct(pid)
         await productModel.findByIdAndDelete(pid)
-        res.send({
+        return res.json({
             status: "success",
             response : "Producto eliminado"
         })
@@ -134,7 +134,7 @@ router.delete('/:pid', async (req, res) => {
 
     catch(error){            
 
-        res.send({
+        return res.json({
             status: "error",
             error: error
         })

@@ -5,3 +5,4 @@ socket.emit("start")
 socket.on("cart_updated", (data)=>{
     cart.innerText = data 
 })
+

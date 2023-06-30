@@ -275,4 +275,56 @@ main #pie_total span {
 }
 #user_session a:visited {
   color: black;
+}
+
+#register_form {
+  padding: 1vw;
+  display: flex;
+}
+#register_form div {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  left: 15vw;
+  padding-bottom: 1vw;
+}
+#register_form div input {
+  font-size: x-large;
+  position: absolute;
+  right: 30vw;
+  width: 30vw;
+}
+
+#register_form__button {
+  position: relative;
+  margin: 2vw;
+  padding: 0.5vw;
+  font-size: x-large;
+  left: 40vw;
+}
+
+#login_form {
+  padding: 1vw;
+  display: flex;
+}
+#login_form div {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  left: 15vw;
+  padding-bottom: 1vw;
+}
+#login_form div input {
+  font-size: x-large;
+  position: absolute;
+  right: 30vw;
+  width: 30vw;
+}
+
+#login_form__button {
+  position: relative;
+  margin: 2vw;
+  padding: 0.5vw;
+  font-size: x-large;
+  left: 40vw;
 }/*# sourceMappingURL=styles.css.map */
