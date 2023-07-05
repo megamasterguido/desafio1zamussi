@@ -3,6 +3,8 @@ import { userModel } from '../../models/user.model.js'
 import register_validator from '../../middlewares/register_auth_validator.js'
 import register_password_validator from '../../middlewares/register_password_validator.js'
 import login_validator from '../../middlewares/login_validator.js'
+import createHash from '../../middlewares/createHash.js'
+import isValidPassword from '../../middlewares/isValidPassword.js'
 
 const router = Router()
 
@@ -10,6 +12,7 @@ router.post(
     '/register',
     register_validator,
     register_password_validator,
+    createHash,
     async (req, res) => {
         try{
             let {mail} = req.body
@@ -41,6 +44,7 @@ router.post(
     '/login',
     login_validator,
     register_password_validator,
+    isValidPassword,
     async (req, res) => {
         try{
             let {mail, password} = req.body
