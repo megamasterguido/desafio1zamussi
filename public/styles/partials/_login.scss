@@ -16,10 +16,18 @@
     }
 }
 
-#login_form__button{
-    position: relative;
-    margin: 2vw;
-    padding: 0.5vw;
-    font-size: x-large;
-    left: 40vw;
+#login_buttons{
+    display: flex;
+    justify-content: space-around;
+    button{
+        position: relative;
+        margin: 2vw;
+        padding: 0.5vw;
+        font-size: x-large;
+    }
+    #login_github_button{
+        background-color: rgb(31, 31, 31);
+        color: white;
+    }
+    
 }

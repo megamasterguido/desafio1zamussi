@@ -17,7 +17,8 @@ async function escuchaSubmit (){
     let config = {
         mode: "cors",
         method: "POST",
-        headers: { "Content-Type": "application/json" }, 
+        headers: { "Content-Type": "application/json",
+                    "authorization": ''}, 
         body: nuevo
     }
 

@@ -5,6 +5,8 @@ import register_password_validator from '../../middlewares/register_password_val
 import login_validator from '../../middlewares/login_validator.js'
 import createHash from '../../middlewares/createHash.js'
 import isValidPassword from '../../middlewares/isValidPassword.js'
+import passport from 'passport'
+import jwt_generate from '../../middlewares/jwt_generate.js'
 
 const router = Router()
 
@@ -45,29 +47,12 @@ router.post(
     login_validator,
     register_password_validator,
     isValidPassword,
+    jwt_generate,
     async (req, res) => {
         try{
-            let {mail, password} = req.body
-            let user = await userModel.findOne({mail:mail})
-            if(user){                
-                if(user.password == password){
-                    req.session.mail = mail
-                    req.session.role = user.role
-                    return res.json({
-                        status: 'success',
-                        response: "Inicio de sesión exitoso"
-                    })
-                }
-                else{
-                    return res.json({
-                        status: 'error',
-                        error: "Contraseña incorrecta"
-                    })
-                }
-            }
             return res.json({
-                status: 'error',
-                error: "Usuario no encontrado"
+                status: 'success',
+                response: "Inicio de sesión exitoso"
             })                
         }
         catch(error){
@@ -83,6 +68,7 @@ router.post(
     '/logout',
     async(req, res) => {
         try{
+            console.log(req.session)
             req.session.destroy()
             return res.json({
                 status: "success",
@@ -124,5 +110,20 @@ router.get(
         }
     }
 )
+
+router.get('/github', passport.authenticate('github',{ scope:['user:email'] }), (req,res)=>{})
+
+router.get(
+    '/github/callback',     //endpoint
+    passport.authenticate('github',{ failureRedirect:'/api/auth/fail-register-github' }),   //middleware con estrategia de auth de github
+    (req,res)=> res.redirect('/')
+)
+
+router.get('/fail-register-github',(req,res)=> res.json({
+    status: "error",
+    response:'bad auth'
+}))
+
+
 
 export default router

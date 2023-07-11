@@ -295,12 +295,19 @@ main #pie_total span {
   width: 30vw;
 }
 
-#register_form__button {
+#register_buttons {
+  display: flex;
+  justify-content: space-around;
+}
+#register_buttons button {
   position: relative;
   margin: 2vw;
   padding: 0.5vw;
   font-size: x-large;
-  left: 40vw;
+}
+#register_buttons #register_github_button {
+  background-color: rgb(31, 31, 31);
+  color: white;
 }
 
 #login_form {
@@ -321,10 +328,17 @@ main #pie_total span {
   width: 30vw;
 }
 
-#login_form__button {
+#login_buttons {
+  display: flex;
+  justify-content: space-around;
+}
+#login_buttons button {
   position: relative;
   margin: 2vw;
   padding: 0.5vw;
   font-size: x-large;
-  left: 40vw;
+}
+#login_buttons #login_github_button {
+  background-color: rgb(31, 31, 31);
+  color: white;
 }/*# sourceMappingURL=styles.css.map */

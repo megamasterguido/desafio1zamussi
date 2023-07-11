@@ -21,10 +21,23 @@ async function register_solititude(){
             body: JSON.stringify(nuevo)
         })
         .then(resp => resp.json())
-        .then(resp => {if(resp.status == 'error'){typeof(resp.error) == "string" ? alert(resp.error) : alert("Rol no encontrado")}})
+        .then(resp => {if(resp.status == 'error'){
+            typeof(resp.error) == "string" ? alert(resp.error) : alert("Rol no encontrado")
+            }
+            else if (resp.status == "success"){
+                alert("Usuario creado con éxito. Será redirigido al Home.")
+                window.location.href = "http://localhost:8080/api/auth/github"
+            }})
         .catch(err => alert(err))
     }
     else{
         alert("Las contraseñas no coinciden")
     }
+}
+
+
+document.getElementById("register_github_button").addEventListener("click", register_github)
+
+async function register_github(){
+    window.location.href = "http://localhost:8080/api/auth/github"
 }

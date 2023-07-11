@@ -1,6 +1,7 @@
 import { Router } from "express"
 import ProductManager from "../../dao/managers/ProductManager.js"
 import { productModel } from "../../models/product.model.js"
+import jwt_auth from "../../middlewares/jwt_auth.js"
 const router = Router()
 
 let Productos = new ProductManager("src/data/products.json")
@@ -55,6 +56,7 @@ router.get('/:pid',
 })
 
 router.post('/',
+    jwt_auth,
     async (req, res) => {
         let {title, description, price, thumbnail, stock} = req.body
         try{
