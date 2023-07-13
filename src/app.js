@@ -30,7 +30,7 @@ app.use(expressSession({
     }),           
     secret: process.env.SECRET_SESSION,
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
 }))
 
 inicializePassport()

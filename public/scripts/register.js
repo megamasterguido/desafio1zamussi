@@ -26,7 +26,7 @@ async function register_solititude(){
             }
             else if (resp.status == "success"){
                 alert("Usuario creado con éxito. Será redirigido al Home.")
-                window.location.href = "http://localhost:8080/api/auth/github"
+                window.location.href = "http://localhost:8080/"
             }})
         .catch(err => alert(err))
     }

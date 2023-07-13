@@ -1,4 +1,5 @@
-document.getElementById("login_form__button").addEventListener("click", login_solititude)
+let login = document.getElementById("login_form__button")
+let github_login = document.getElementById("login_github_button")
 
 async function login_solititude(){
 
@@ -17,15 +18,17 @@ async function login_solititude(){
         typeof(resp.error) == "string" ? alert(resp.error) : alert("Inicio de sesión fallido")
         }
         else if (resp.status == "success"){
+            socket.emit("login")
             alert("Inicio de sesión exitoso. Será redirigido al Home.")
-            window.location.href = "http://localhost:8080/api/auth/github"
+            window.location.href = "http://localhost:8080/"
         }})
     .catch(err => alert(err))
     
 }
 
-document.getElementById("login_github_button").addEventListener("click", login_github)
-
 async function login_github(){
     window.location.href = "http://localhost:8080/api/auth/github"
 }
+
+login.addEventListener("click", login_solititude)
+github_login.addEventListener("click", login_github)

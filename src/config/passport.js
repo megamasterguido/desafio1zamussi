@@ -60,7 +60,6 @@ export default function(){
             { clientID: process.env.GH_CLIENT,clientSecret:process.env.GH_SECRET,callbackURL:process.env.githubCb },
             async (accessToken,refreshToken,profile,done) => {
                 try {
-                    console.log(profile)
                     let one = await userModel.findOne({ mail:profile._json.login })
                     if (!one) {
                         let user = await userModel.create({

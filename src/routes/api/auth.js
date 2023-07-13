@@ -68,7 +68,6 @@ router.post(
     '/logout',
     async(req, res) => {
         try{
-            console.log(req.session)
             req.session.destroy()
             return res.json({
                 status: "success",
@@ -88,19 +87,14 @@ router.get(
     '/',
     async (req, res) => {
         try{
-            console.log(req.session)
-            if(req.session.mail){
-                return res.json({
-                    status: "success",
-                    response: req.session.mail
-                })                
+            let resp = {
+                usuario: req.user || "Nada",
+                session: req.session || "Nada"
             }
-            else{
-                return res.json({
-                    status: "success",
-                    response: "No hay ninguna sesión en curso"
-                })                
-            }
+            return res.json({
+                status: "success",
+                response: resp
+            })      
         }
         catch(error){
             return res.json({

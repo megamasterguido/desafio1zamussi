@@ -12,6 +12,19 @@ mongoose.connect(process.env.LINK_MONGO)
 
 let chat = []
 let cart
+let user_session = [`
+<a id="user_session_register" href="/auth/register">
+    Register
+</a>
+<a id="user_session_login" href="/auth/login">
+    Log in
+</a>`,
+`
+    <a id="user_session_logout" href="#">
+        Log out
+    </a>`
+]
+let user_session_navbar = 0
 
 async function update_cart(){
     cart = await fetch("http://localhost:8080/api/carts/648ccc29ca71f8147c552fec")
@@ -26,7 +39,11 @@ socket_server.on(
     'connection',
     socket => {
         console.log("connected")
-        socket.on("start", update_cart)
+        socket.on("start", () => {
+            update_cart()
+            console.log(user_session, user_session_navbar)
+            socket_server.emit("session_update", user_session[user_session_navbar])
+        })
         socket.on("cart_req", async () => {
             cart = await fetch("http://localhost:8080/api/carts/648ccc29ca71f8147c552fec")
             .then(resp => resp.json())
@@ -43,5 +60,13 @@ socket_server.on(
             socket_server.emit("chat", chat)
         })
         socket.on("cart_update", update_cart)
+        socket.on("login", ()=>{
+            user_session_navbar = 1
+            socket_server.emit("session_update", user_session[user_session_navbar])
+        })
+        socket.on("logout", ()=>{
+            user_session_navbar = 0
+            socket_server.emit("session_update", user_session[user_session_navbar])
+        })
     }
 )

@@ -4,7 +4,6 @@ import "dotenv/config.js"
 
 export default (req, res, next) => {
     const auth = req.headers.authorization
-    console.log(auth)
     if (!auth) {
         return res.json({
             status: "error",
