@@ -42,6 +42,7 @@ export default function(){
             { usernameField:'mail' },
             async (username,password,done) => {
                 try {
+                    console.log(req.body)
                     let one = await userModel.findOne({ mail:username })
                     if (one) {
                         return done(null,one)

@@ -106,6 +106,7 @@ router.get(
 )
 
 router.get('/github', passport.authenticate('github',{ scope:['user:email'] }), (req,res)=>{})
+router.get('/login2', passport.authenticate('login',{}), (req,res)=>{ console.log("LOGIN 2")})
 
 router.get(
     '/github/callback',     //endpoint
