@@ -31,14 +31,14 @@ router.get(
                     total:{$sum:"$total"}
                 }}
             ])
-            return res.json({
-                status: "success",
+            return res.status(201).json({
+                success: true,
                 response: resp
             })
         }
         catch(error){
-            return res.json({
-                status: "error",
+            return res.status(500).json({
+                success: false,
                 error: error
             })
         }
@@ -57,15 +57,15 @@ router.get('/',async (req,res)=> {
         else{
             filtrados = await cartModel.find().populate('products._id')
     }
-        return res.json({
-            status: "success",
+        return res.status(200).json({
+            success: true,
             response: filtrados
         })
     }
     catch(error){            
 
-        return res.json({
-            status: "error",
+        return res.status(500).json({
+            success: false,
             error: error
         })
     }        
@@ -81,15 +81,15 @@ router.get('/:cid',async (req,res)=> {
             function(a,b){
                 return a._id.title > b._id.title ? 1: -1
             })
-        return res.json({
-            status: "success",
+        return res.status(200).json({
+            success: true,
             response: resp[0]
         })
     }
     catch(error){            
 
-        return res.json({
-            status: "error",
+        return res.status(500).json({
+            success: false,
             error: error
         })
     }
@@ -107,15 +107,15 @@ router.post('/', async (req, res) => {
         .catch(
             err => console.error(err)
         )
-        return res.json({
-            status: "success",
+        return res.status(201).json({
+            success: true,
             response: resp
         })
     }
     catch(error){            
 
-        return res.json({
-            status: "error",
+        return res.status(500).json({
+            success: false,
             error: error
         })
     }
@@ -135,8 +135,8 @@ router.put("/:cid/products/:pid/:units", async (req, res) => {
         if(prod){
             if(prod.stock < units){
                 resp = "No se pueden agregar tantas unidades"
-                return res.json({
-                    status: "error",
+                return res.status(400).json({
+                    success: false,
                     response: resp
                 })
             }
@@ -153,8 +153,8 @@ router.put("/:cid/products/:pid/:units", async (req, res) => {
                 }
                 else{
                     resp = "Carrito no encontrado"
-                    return res.json({
-                        status: "error",
+                    return res.status(404).json({
+                        success: false,
                         response: resp
                     })
                 }
@@ -164,24 +164,24 @@ router.put("/:cid/products/:pid/:units", async (req, res) => {
                 },
                 {new: true})
                 Carritos.addProduct(cid, pid, units)
-                return res.json({
-                    status: "succes",
+                return res.status(202).json({
+                    success: true,
                     response: resp
                 })
             }
         }
         else{
             resp = "Producto no encontrado"
-            return res.json({
-                status: "error",
+            return res.status(404).json({
+                success: false,
                 response: resp
             })
         }
     }
     catch(error){            
 
-        return res.json({
-            status: "error",
+        return res.status(500).json({
+            success: false,
             error: error
         })
     }
@@ -219,47 +219,47 @@ router.delete("/:cid/products/:pid/:units", async (req, res) => {
                         await productModel.findByIdAndUpdate(pid,{
                             stock: prod.stock + parseInt(units)
                         })
-                        return res.json({
-                            status: "success",
+                        return res.status(202).json({
+                            success: true,
                             response: resp
                         })
                     }
                     else{
                         resp = "No se pudo encontrar el articulo en la base de datos, pero se retiro igualmente del carrito."
-                        return res.json({
-                            status: "error",
+                        return res.status(500).json({
+                            success: false,
                             response: resp
                         })
                     }
                 }
                 else{
                     resp = "No hay tantas unidades del producto en el carrito"
-                    return res.json({
-                        status: "error",
+                    return res.status(400).json({
+                        success: false,
                         response: resp
                     })
                 }
             }
             else{
                 resp = "Producto no encontrado en el carrito"
-                return res.json({
-                    status: "error",
+                return res.status(404).json({
+                    success: false,
                     response: resp
                 })
             }
         }
         else{
             resp = "Carrito no encontrado"
-            return res.json({
-                status: "error",
+            return res.status(404).json({
+                success: false,
                 response: resp
             })
         }
     }
     catch(error){            
 
-        return res.json({
-            status: "error",
+        return res.status(500).json({
+            success: false,
             error: error
         })
     }

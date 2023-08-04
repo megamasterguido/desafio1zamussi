@@ -2,8 +2,8 @@ function login_validator(req, res, next){
     
     let {mail, password} = req.body
     if(!mail || !password){
-        return res.json({
-            status: 'error',
+        return res.status(400).json({
+            success: false,
             error: "Complete ambos campos para proseguir"
         })                
     }

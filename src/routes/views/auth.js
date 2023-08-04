@@ -17,4 +17,13 @@ router.get('/login', async(req,res,next)=> {
     }
 })
 
+router.get('/github_success', async(req,res,next)=> {
+    try {
+        return res.render('index',{ title:'Github Success', script: '/public/scripts/github.js', style: "/public/styles/styles.css"})
+    } catch(error) {
+        next(error)
+    }
+})
+
+
 export default router

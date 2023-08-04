@@ -3,7 +3,7 @@ import { userModel } from '../models/user.model.js'
 
 export default async function isValidPassword(req, res, next) {
     
-    let user = await userModel.findOne({mail:req.body.mail})
+    let user = req.user
     if(user){
         let verified = compareSync(
             req.body.password,
@@ -16,14 +16,14 @@ export default async function isValidPassword(req, res, next) {
             return next()
         }
 
-        return res.json({
-            status: "error",
+        return res.status(400).json({
+            success: false,
             error: 'Contraseña incorrecta'
         })
     }
     else{
-        return res.json({
-            status: "error",
+        return res.status(404).json({
+            success: false,
             error: 'Usuario no encontrado.'
         })
     }

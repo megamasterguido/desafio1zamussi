@@ -26,7 +26,7 @@ async function login_solititude(){
     
 }
 
-async function login_github(){
+function login_github(){
     window.location.href = "http://localhost:8080/api/auth/github"
 }
 

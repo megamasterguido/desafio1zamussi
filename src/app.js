@@ -22,7 +22,7 @@ app.engine('handlebars',engine())
 app.set('view engine','handlebars')
 app.set('views',__dirname+'/views')
 
-app.use(cookieParser())
+app.use(cookieParser(process.env.COOKIE_SECRET))
 app.use(expressSession({
     store: mongoStore.create({
         mongoUrl: process.env.LINK_MONGO,

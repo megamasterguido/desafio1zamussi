@@ -41,7 +41,6 @@ socket_server.on(
         console.log("connected")
         socket.on("start", () => {
             update_cart()
-            console.log(user_session, user_session_navbar)
             socket_server.emit("session_update", user_session[user_session_navbar])
         })
         socket.on("cart_req", async () => {

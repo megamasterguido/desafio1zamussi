@@ -18,15 +18,15 @@ router.get('/',
         filtrados = await productModel.paginate(
             {title},
             {limit, page})
-        return res.json({
-            status: "success",
+        return res.status(200).json({
+            success: true,
             response: filtrados
         })
     }
     catch(error){            
 
-        return res.json({
-            status: "error",
+        return res.status(500).json({
+            success: false,
             error: error
         })
     }        
@@ -41,15 +41,15 @@ router.get('/:pid',
     try{
         resp = await productModel.find({_id: pid})
         resp = resp[0]
-        return res.json({
-            status: "success",
+        return res.status(200).json({
+            success: true,
             response: resp
         })
     }
     catch(error){            
 
-        return res.json({
-            status: "error",
+        return res.status(500).json({
+            success: false,
             error: error
         })
     }
@@ -77,16 +77,16 @@ router.post('/',
                 return resp
             }).catch(err => console.error(err))
 
-            return res.json({
-                status: "success",
+            return res.status(201).json({
+                success: true,
                 response:resp
             })
 
         }
         catch(error){            
 
-            return res.json({
-                status: "error",
+            return res.status(500).json({
+                success: false,
                 error: error
             })
         }
@@ -101,21 +101,21 @@ router.put('/:pid', async (req, res) => {
     let resp = {before: '', after: ''}
 
     try{
-        let prod = Productos.updateProduct(pid, nuevo)
+        Productos.updateProduct(pid, nuevo)
         let one = await productModel.findByIdAndUpdate(pid, nuevo)
         resp.before = one
         one = await productModel.find({_id: pid})
         resp.after = one
-        return res.json({
-            status: "success",
+        return res.status(202).json({
+            success: true,
             response : resp
         })
 
         }
         catch(error){            
 
-            return res.json({
-                status: "error",
+            return res.status(500).json({
+                success: false,
                 error: error
             })
         }
@@ -128,16 +128,16 @@ router.delete('/:pid', async (req, res) => {
     try{
         let prod = Productos.deleteProduct(pid)
         await productModel.findByIdAndDelete(pid)
-        return res.json({
-            status: "success",
+        return res.status(202).json({
+            success: true,
             response : "Producto eliminado"
         })
     }
 
     catch(error){            
 
-        return res.json({
-            status: "error",
+        return res.status(500).json({
+            success: false,
             error: error
         })
     }

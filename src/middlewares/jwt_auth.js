@@ -5,8 +5,8 @@ import "dotenv/config.js"
 export default (req, res, next) => {
     const auth = req.headers.authorization
     if (!auth) {
-        return res.json({
-            status: "error",
+        return res.status(401).json({
+            success: false,
             error: 'error de autorización!'
         })
     }
@@ -17,7 +17,7 @@ export default (req, res, next) => {
         async(error,credentials) => {
             if(error) {
                 return res.json({
-                    status: "error",
+                    success: false,
                     error: 'error de autorización!'
                 })
             }

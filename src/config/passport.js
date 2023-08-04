@@ -3,7 +3,10 @@ import { Strategy } from 'passport-local'
 import GHStrategy from 'passport-github2'
 import passport from 'passport'
 import { userModel } from '../models/user.model.js'
+import jwt from 'passport-jwt'
 
+
+const JWTStrategy = jwt.Strategy
 
 export default function(){
     passport.serializeUser(
@@ -15,6 +18,27 @@ export default function(){
             const user = await userModel.findById(id)
             return done(null, user)
         }
+    )
+
+    passport.use(
+        'jwt',
+        new JWTStrategy({
+            jwtFromRequest: jwt.ExtractJwt.fromExtractors([(req) => req?.cookies['token']]),
+            secretOrKey: process.env.JWT_SECRET
+        },
+        async (jwt_playload, done) => {
+            try{
+                let user = await userModel.findOne({mail: jwt_playload.mail})
+                if(user){
+                    delete user.password
+                    return done(null, user)
+                }
+                return done(null, false, {message: 'not auth'})
+            }
+            catch(err){
+                return done(err,false)
+            }
+        })
     )
 
     passport.use(
@@ -42,7 +66,6 @@ export default function(){
             { usernameField:'mail' },
             async (username,password,done) => {
                 try {
-                    console.log(req.body)
                     let one = await userModel.findOne({ mail:username })
                     if (one) {
                         return done(null,one)
