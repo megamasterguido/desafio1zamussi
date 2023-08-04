@@ -11,7 +11,8 @@ export default (strategy)=> {
                 }
                 if (!user) {
                     return res.status(401).json({
-                        error: info.messages ? info.messages : info.toString()
+                        success: false,
+                        error: info.message ? info.message : info.toString()
                     })
                 }
                 req.user = user

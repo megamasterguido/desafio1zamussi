@@ -8,6 +8,7 @@ import isValidPassword from '../../middlewares/isValidPassword.js'
 import passport from 'passport'
 import jwt_generate from '../../middlewares/jwt_generate.js'
 import passport_call from '../../middlewares/passport_call.js'
+import current_check from '../../middlewares/current_check.js'
 
 const router = Router()
 
@@ -16,26 +17,17 @@ router.post(
     register_validator,
     register_password_validator,
     createHash,
+    passport_call('register'),
+    jwt_generate,
     async (req, res) => {
         try{
-            let {mail} = req.body
-            let repetido = await userModel.find({mail:mail})
-            if(repetido.length > 0){
-                return res.status(400).json({
-                    success: false,
-                    error: "El correo ingresado ya pertenece a un usuario existente."
-                })                
-            }
-            else{
-                let resp = await userModel.create(req.body)
-                return res.status(201).json({
-                    success: true,
-                    response: resp
-                })
-            }
+            return res.status(201).cookie('token',req.token, {maxAge: 60 * 60 * 1000, httpOnly: true}).json({
+                success: true,
+                response: req.user
+            })
         }
         catch(error){
-            return res.status(404).json({
+            return res.status(500).json({
                 success: false,
                 error: error
             })
@@ -124,5 +116,25 @@ router.get('/fail-register-github',(req,res)=> res.status(400).json({
     response:'bad auth'
 }))
 
+
+router.get(
+    '/current',
+    current_check,
+    passport_call('current'),
+    async (req, res) => {
+        try{
+            return res.status(201).json({
+                success: true,
+                response: req.user
+            })
+        }
+        catch(error){
+            return res.status(500).json({
+                success: false,
+                error: error
+            })
+        }
+    }
+)
 
 export default router

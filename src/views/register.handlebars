@@ -1,8 +1,12 @@
 <main>
     <form id="register_form">
         <div>
-            <label for="register_form__name">Nombre</label>
-            <input id="register_form__name" type="text">
+            <label for="register_form__first_name">Nombre</label>
+            <input id="register_form__first_name" type="text">
+        </div>
+        <div>
+            <label for="register_form__last_name">Apellido</label>
+            <input id="register_form__last_name" type="text">
         </div>
         <div>
             <label for="register_form__photo">Foto</label>
@@ -10,7 +14,7 @@
         </div>
         <div>
             <label for="register_form__mail">Mail</label>
-            <input id="register_form__mail" type="text">
+            <input id="register_form__mail" type="email">
         </div>
         <div>
             <label for="register_form__age">Edad</label>
@@ -20,8 +24,8 @@
             <label for="register_form__role" >Role</label>
             <input id="register_form__role" list="roles" placeholder="No obligatorio">
             <datalist id="roles">
-                <option value="0">Usuario</option>
-                <option value="1">Administrador</option>
+                <option value="user">Usuario</option>
+                <option value="admin">Administrador</option>
             </datalist>
         </div>
         <div>

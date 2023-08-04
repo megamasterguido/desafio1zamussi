@@ -33,7 +33,27 @@ export default function(){
                     delete user.password
                     return done(null, user)
                 }
-                return done(null, false, {message: 'not auth'})
+                return done(null, false, {message: 'Error de autenticación de token'})
+            }
+            catch(err){
+                return done(err,false)
+            }
+        })
+    )
+
+    passport.use(
+        'current',
+        new JWTStrategy({
+            jwtFromRequest: jwt.ExtractJwt.fromExtractors([(req) => req?.cookies['token']]),
+            secretOrKey: process.env.JWT_SECRET
+        },
+        async (jwt_playload, done) => {
+            try{
+                let user = await userModel.findOne({mail: jwt_playload.mail})
+                if(user){
+                    return done(null, user)
+                }
+                return done(null, false, {message: 'No hay ninguna sesión en curso'})
             }
             catch(err){
                 return done(err,false)
@@ -47,12 +67,12 @@ export default function(){
             { passReqToCallback:true,usernameField:'mail' },
             async (req,userName,password,done) => {
                 try {
-                    let one = await User.findOne({ mail:userName })
+                    let one = await userModel.findOne({ mail:userName })
                     if (!one) {
                         let user = await userModel.create(req.body)
                         return done(null,user)
                     }
-                    return done(null,false)
+                    return done(null,false, {message: "El correo ingresado ya pertenece a un usuario existente."})
                 } catch (error) {
                     return done(error)
                 }
@@ -87,7 +107,8 @@ export default function(){
                     let one = await userModel.findOne({ mail:profile._json.login })
                     if (!one) {
                         let user = await userModel.create({
-                            name:profile._json.name,
+                            first_name:profile._json.name,
+                            last_name:"from Github",
                             mail:profile._json.login,
                             photo:profile._json.avatar_url,
                             password:profile._json.id
