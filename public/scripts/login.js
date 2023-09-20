@@ -7,27 +7,28 @@ async function login_solititude(){
         mail: document.getElementById("login_form__mail").value,
         password: document.getElementById("login_form__password").value
     })
-    await fetch("http://localhost:8080/api/auth/login", {
+    await fetch("http://localhost:"+ port +"/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" }, 
         mode: "cors",
         body: usuario
     })
     .then(resp => resp.json())
-    .then(resp => {if(resp.status == 'error'){
-        typeof(resp.error) == "string" ? alert(resp.error) : alert("Inicio de sesión fallido")
-        }
-        else if (resp.status == "success"){
-            socket.emit("login")
+    .then(async resp => {
+        if (resp.success){
+            socket.emit("login", resp.response.cart)
+            cart_id = resp.response.cart
             alert("Inicio de sesión exitoso. Será redirigido al Home.")
-            window.location.href = "http://localhost:8080/"
+            window.location.href = "/"
+        }
+        else{
+            typeof(resp.error) == "string" ? alert(resp.error) : alert("Inicio de sesión fallido")            
         }})
     .catch(err => alert(err))
-    
 }
 
 function login_github(){
-    window.location.href = "http://localhost:8080/api/auth/github"
+    window.location.href = "http://localhost:"+ port +"/api/auth/github"
 }
 
 login.addEventListener("click", login_solititude)

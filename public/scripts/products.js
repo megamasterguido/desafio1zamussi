@@ -2,8 +2,7 @@ let productos = []
 let pagina = []
 let page = 1
 
-let link = "http://localhost:8080/api/products"
-let link_handler = "http://localhost:8080/api/carts/648ccc29ca71f8147c552fec/products/"
+let link = "http://localhost:"+ port +"/api/products"
 
 let titulo = document.getElementById("products__search_input")
 let buscar = document.getElementById("products__search_button")
@@ -15,6 +14,25 @@ function busqueda(){
 
 buscar.addEventListener("click", busqueda)
 titulo.addEventListener("keyup", (e) => {if(e.key == "Enter"){busqueda()}})
+
+async function agregar_al_carrito(cod, units){
+    if(cart_id){
+        fetch("http://localhost:"+ port +"/api/carts/" + cart_id +"/products/" + cod +"/"+units, {method: "PUT"})
+            .then(resp => resp.json())
+            .then(resp => {
+                if(resp.error){
+                    alert(resp.error)
+                }
+                else{
+                    socket.emit("cart_update")
+                }
+            })
+            .catch(err => console.error(err))
+    }
+    else{
+        alert("Para agregar articulos al carrito debe iniciar sesion.")
+    }
+}
 
 async function obtener_productos(link){
     products_box.innerHTML = ''
@@ -29,19 +47,7 @@ async function obtener_productos(link){
             let cod = productos[i]._id
             let button = document.getElementById("add_cart__button" + cod)
             let input = document.getElementById("add_cart__input" + cod)
-            button.addEventListener("click", () => {
-                fetch(link_handler+ cod +"/"+input.value, {method: "PUT"})
-                .then(resp => resp.json())
-                .then(resp => {
-                    if(typeof(resp.response) == "string"){
-                        alert(resp.response)
-                    }
-                    else{
-                        socket.emit("cart_update")
-                    }
-                })
-                .catch(err => console.error(err))
-            })
+            button.addEventListener("click", async () => agregar_al_carrito(cod, input.value))
         }
         
         pages()

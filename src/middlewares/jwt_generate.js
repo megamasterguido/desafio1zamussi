@@ -1,10 +1,10 @@
 import jwt from 'jsonwebtoken'
-import "dotenv/config.js"
+import config from '.././config.js'
 
 export default (req,res,next) => {
     req.token = jwt.sign(
         { mail:req.body.mail },
-        process.env.JWT_SECRET,
+        config.jwt,
         { expiresIn:60*60*24 }
     )
     return next()

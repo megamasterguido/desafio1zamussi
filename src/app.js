@@ -7,7 +7,7 @@ import { __dirname } from './utils.js'
 import cookieParser from 'cookie-parser'
 import expressSession from "express-session"
 import mongoStore from 'connect-mongo'
-import 'dotenv/config.js'
+import config from './config.js'
 import morgan from 'morgan'
 import passport from 'passport'
 import inicializePassport from './config/passport.js'
@@ -22,13 +22,13 @@ app.engine('handlebars',engine())
 app.set('view engine','handlebars')
 app.set('views',__dirname+'/views')
 
-app.use(cookieParser(process.env.COOKIE_SECRET))
+app.use(cookieParser(config.cookie))
 app.use(expressSession({
     store: mongoStore.create({
-        mongoUrl: process.env.LINK_MONGO,
+        mongoUrl: config.link_mongo,
         ttl: 300
     }),           
-    secret: process.env.SECRET_SESSION,
+    secret: config.session,
     resave: true,
     saveUninitialized: true,
 }))

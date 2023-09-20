@@ -1,12 +1,12 @@
 import { Router } from "express"
-const router = Router()
+const views_router = Router()
 import products_router from "./products.js"
 import chat_router from "./chat.js"
 import carts_router from "./carts.js"
 import new_product_router from "./new_product.js"
 import user_router from "./auth.js"
 
-router.get('/', async(req,res,next)=> {
+views_router.get('/', async(req,res,next)=> {
     try {
         return res.render('index',{ title:'Inicio', style: "/public/styles/styles.css"})
     } catch(error) {
@@ -14,10 +14,10 @@ router.get('/', async(req,res,next)=> {
     }
 })
 
-router.use("/products", products_router)
-router.use("/chatbot", chat_router)
-router.use("/carts", carts_router)
-router.use("/new_product", new_product_router)
-router.use("/auth", user_router)
+views_router.use("/products", products_router)
+views_router.use("/chatbot", chat_router)
+views_router.use("/carts", carts_router)
+views_router.use("/new_product", new_product_router)
+views_router.use("/auth", user_router)
 
-export default router
+export default views_router

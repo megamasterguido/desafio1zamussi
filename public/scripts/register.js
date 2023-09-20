@@ -15,7 +15,15 @@ async function register_solititude(){
         let foto = document.getElementById("register_form__photo").value
         if(rol) nuevo.role = rol;
         if(foto) nuevo.photo = foto;
-        await fetch("http://localhost:8080/api/auth/register", {
+        if(cart_id){
+            nuevo.cart = cart_id
+        }
+        else{
+            nuevo.cart = await fetch("http://localhost:"+ port +"/api/carts", {method: "POST"})
+                .then(resp => resp._id)
+                .catch(err => console.error(err))
+        }
+        await fetch("http://localhost:"+ port +"/api/auth/register", {
             method: "POST",
             headers: { "Content-Type": "application/json" }, 
             mode: "cors",
@@ -25,8 +33,8 @@ async function register_solititude(){
         .then(resp => {
             if(resp.success){
                 alert("Usuario creado con éxito. Será redirigido al Home.")
-                socket.emit('login')
-                window.location.href = "http://localhost:8080/"
+                socket.emit("login", resp.response.cart)
+                window.location.href = "http://localhost:"+ port +"/"
             }
             else{
                 alert(resp.error)
@@ -44,5 +52,5 @@ registro.addEventListener("click", register_solititude)
 github.addEventListener("click", register_github)
 
 async function register_github(){
-    window.location.href = "http://localhost:8080/api/auth/github"
+    window.location.href = "http://localhost:"+ port +"/api/auth/github"
 }

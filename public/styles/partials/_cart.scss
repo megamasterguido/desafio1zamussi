@@ -1,5 +1,15 @@
 main{
     #cart{
+        #sinUsuario{
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-content: center;
+            border: solid;
+            margin: 2vw;
+            padding: 2vw;
+            font-size: xx-large;
+        }
         padding: 1vw;
         .cart_item{
             padding: 1vw;

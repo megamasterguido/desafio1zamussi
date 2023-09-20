@@ -1,67 +1,81 @@
+
+
 socket.emit("cart_req")
+
 socket.on("cart_res", async (data) => {
+    cart_id = data._id
     let carrito = document.getElementById("cart")
     carrito.innerHTML = ''
-
-    for(let i = 0; i < data.length; i++){
-        carrito.innerHTML += await cart_item(data[i])
+    if(cart_id){
+        for(let i = 0; i < data.products.length; i++){
+            carrito.innerHTML += await cart_item(data.products[i])
+        }
+    
+        data.products.forEach(async function(element){
+            const cod = element._id._id
+    
+            const less = document.getElementById(`cart_item__less${cod}`)
+            const more = document.getElementById(`cart_item__more${cod}`)
+            const del = document.getElementById(`cart_item__delete${cod}`)
+    
+            less.addEventListener("click", async () => await less_handler(cod))
+            more.addEventListener("click", async () => await more_handler(cod))
+            del.addEventListener("click", async () => await delete_handler(cod))
+        });
+        await calcular_total()
+        socket.emit("cart_update")
     }
-
-    data.forEach(async function(element){
-        const cod = element._id._id
-
-        const less = document.getElementById(`cart_item__less${cod}`)
-        const more = document.getElementById(`cart_item__more${cod}`)
-        const del = document.getElementById(`cart_item__delete${cod}`)
-
-        less.addEventListener("click", async () => await less_handler(cod))
-        more.addEventListener("click", async () => await more_handler(cod))
-        del.addEventListener("click", async () => await delete_handler(cod))
-    });
-    await calcular_total()
-    socket.emit("cart_update")
+    else{
+        carrito.innerHTML = `<span id="sinUsuario">Para agregar articulos al carrito debe iniciar sesion</span>`
+    }
 })
 
 
 async function calcular_total(){
-    
-    let total = document.getElementById("total")
-    await fetch("http://localhost:8080/api/carts/bills/648ccc29ca71f8147c552fec")
-        .then(resp=>resp.json())
-        .then(resp => total.innerText = '$' + resp.response[0].total)
-
+    if(cart_id){
+        let total = document.getElementById("total")
+        await fetch("http://localhost:"+ port +"/api/carts/bills/" + cart_id)
+            .then(resp=>resp.json())
+            .then(resp => total.innerText = '$' + resp.response[0].total)
+    }
 }
 
 async function delete_handler(id){
-    let cant = +document.querySelector(`#cart_item${id} .units`).innerText
-    await fetch("http://localhost:8080/api/carts/648ccc29ca71f8147c552fec/products/" + id + '/' + cant, {method: "DELETE"})
-    .then(res => res.json())
-    .then(res => res.response)
-    .catch(err => console.error(err))
-
-    socket.emit("cart_req")
+    if(cart_id){
+        let cant = +document.querySelector(`#cart_item${id} .units`).innerText
+        await fetch("http://localhost:"+ port +"/api/carts/" + cart_id + "/products/" + id + '/' + cant, {method: "DELETE"})
+        .then(res => res.json())
+        .then(res => res.response)
+        .catch(err => console.error(err))
+    
+        socket.emit("cart_req")
+    }
 }
 
 async function less_handler(id){
-    await fetch("http://localhost:8080/api/carts/648ccc29ca71f8147c552fec/products/" + id + '/' + 1, {method: "DELETE"})
-    .then(res => res.json())
-    .then(res => res.response)
-    .catch(err => console.error(err))
-
-    socket.emit("cart_req")
+    if(cart_id){
+        await fetch("http://localhost:"+ port +"/api/carts/" + cart_id + "/products/" + id + '/' + 1, {method: "DELETE"})
+        .then(res => res.json())
+        .then(res => res.response)
+        .catch(err => console.error(err))
+    
+        socket.emit("cart_req")
+    }
 }
 
 async function more_handler(id){
-    await fetch("http://localhost:8080/api/carts/648ccc29ca71f8147c552fec/products/" + id + '/' + 1, {method: "PUT"})
-    .then(res => res.json())
-    .then(res => res.response)
-    .catch(err => console.error(err))
-
-    socket.emit("cart_req")
+    if(cart_id){
+        await fetch("http://localhost:"+ port +"/api/carts/" + cart_id + "/products/" + id + '/' + 1, {method: "PUT"})
+        .then(res => res.json())
+        .then(res => res.response)
+        .catch(err => console.error(err))
+    
+        socket.emit("cart_req")
+    }
 }
 
 async function cart_item(item){
-    let prod = await fetch("http://localhost:8080/api/products/"+item._id._id)
+    let prod = await fetch("http://localhost:"+ port +"/api/products/"+item._id._id)
     .then(res => res.json())
     .then(res => res.response)
     .catch(err => console.error(err))

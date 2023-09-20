@@ -163,6 +163,16 @@ form {
 main #cart {
   padding: 1vw;
 }
+main #cart #sinUsuario {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+  border: solid;
+  margin: 2vw;
+  padding: 2vw;
+  font-size: xx-large;
+}
 main #cart .cart_item {
   padding: 1vw;
   display: flex;

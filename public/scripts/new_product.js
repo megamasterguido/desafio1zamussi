@@ -22,7 +22,7 @@ async function escuchaSubmit (){
         body: nuevo
     }
 
-    let link = "http://localhost:8080/api/products/"
+    let link = "http://localhost:"+ port +"/api/products/"
 
     await fetch(link, 
             config
@@ -31,7 +31,7 @@ async function escuchaSubmit (){
     .then(resp => {
         if(typeof(resp.response) != "string"){
             alert("Articulo cargado con éxito. Será redirigido al catálogo.")
-            window.location.href = "http://localhost:8080/products/"
+            window.location.href = "http://localhost:"+ port +"/products/"
         }
         else{
             alert(resp.response)

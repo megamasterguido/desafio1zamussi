@@ -1,30 +1,35 @@
-let id = window.location.href.substring(31)
-
+let cod = window.location.href.substring(31)
 let prod
 
-fetch("http://localhost:8080/api/products/"+id)
+async function agregar_al_carrito(cod, units){
+    if(cart_id){
+        fetch("http://localhost:"+ port +"/api/carts/" + cart_id +"/products/" + cod +"/"+units, {method: "PUT"})
+            .then(resp => resp.json())
+            .then(resp => {
+                if(resp.error){
+                    alert(resp.error)
+                }
+                else{
+                    socket.emit("cart_update")
+                }
+            })
+            .catch(err => console.error(err))
+    }
+    else{
+        alert("Para agregar articulos al carrito debe iniciar sesion.")
+    }
+}
+
+fetch("http://localhost:"+ port +"/api/products/"+cod)
     .then(resp => resp.json())
     .then(resp => prod = resp.response)
     .then(() => landing(prod))
     .then(() => {
         let button
-        let input
+        let input = document.getElementById("add_cart__input")
 
         button = document.getElementById("add_cart__button")
-            button.addEventListener("click", () => {
-                input = document.getElementById("add_cart__input")
-                fetch("http://localhost:8080/api/carts/648ccc29ca71f8147c552fec/products/"+ id +"/"+input.value, {method: "PUT"})
-                .then(resp => resp.json())
-                .then(resp => {
-                    if(typeof(resp.response) == "string"){
-                        alert(resp.response)
-                    }
-                    else{
-                        socket.emit("cart_update")
-                    }
-                })
-                .catch(err => console.error(err))
-            })
+            button.addEventListener("click",  async () => agregar_al_carrito(cod, input.value))
         }
     )
     .catch(err => console.error(err))

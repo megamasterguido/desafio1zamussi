@@ -1,17 +1,18 @@
 import app from "./app.js";
 import { Server } from "socket.io";
 import mongoose from "mongoose";
-import 'dotenv/config.js'
+import config from "./config.js";
 
-const puerto = process.env.PORT || 8080
+const puerto = config.port
 
 let http_server = app.listen(puerto)
 let socket_server = new Server(http_server)
 
-mongoose.connect(process.env.LINK_MONGO)
+mongoose.connect(config.link_mongo)
 
 let chat = []
-let cart
+let cart_id
+let cart 
 let user_session = [`
 <a id="user_session_register" href="/auth/register">
     Register
@@ -27,27 +28,27 @@ let user_session = [`
 let user_session_navbar = 0
 
 async function update_cart(){
-    cart = await fetch("http://localhost:8080/api/carts/648ccc29ca71f8147c552fec")
+    if(cart_id){
+        cart = await fetch("http://localhost:"+ config.port +"/api/carts/" + cart_id)
         .then(resp => resp.json())
         .then(resp => resp.response)
-        .then(resp => resp.products)
         .catch(err => console.error(err))
-    socket_server.emit("cart_updated", cart.length)
+        socket_server.emit("cart_updated", cart)
+    }
 }
 
 socket_server.on(
     'connection',
     socket => {
         console.log("connected")
-        socket.on("start", () => {
+        socket.on("start", async () => {
             update_cart()
             socket_server.emit("session_update", user_session[user_session_navbar])
         })
         socket.on("cart_req", async () => {
-            cart = await fetch("http://localhost:8080/api/carts/648ccc29ca71f8147c552fec")
+            cart = await fetch("http://localhost:"+ config.port +"/api/carts/" + cart_id)
             .then(resp => resp.json())
             .then(resp => resp.response)
-            .then(resp => resp.products)
             .catch(err => console.error(err))
             socket_server.emit("cart_res", cart)
         })
@@ -59,11 +60,15 @@ socket_server.on(
             socket_server.emit("chat", chat)
         })
         socket.on("cart_update", update_cart)
-        socket.on("login", ()=>{
+        socket.on("login", async (data)=>{
+            cart_id = data
+            update_cart()
             user_session_navbar = 1
             socket_server.emit("session_update", user_session[user_session_navbar])
         })
         socket.on("logout", ()=>{
+            cart_id = false
+            update_cart()
             user_session_navbar = 0
             socket_server.emit("session_update", user_session[user_session_navbar])
         })

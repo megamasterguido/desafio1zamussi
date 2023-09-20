@@ -4,4 +4,4 @@ async function github_success(){
 
 github_success()
     .then(() => socket.emit("login"))
-    .then(() => window.location.href = "http://localhost:8080/")
+    .then(() => window.location.href = "http://localhost:"+ port +"/")

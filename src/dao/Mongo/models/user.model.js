@@ -1,4 +1,4 @@
-import {model, Schema} from 'mongoose'
+import {model, Schema, Types} from 'mongoose'
 
 const userCollection = 'users'
 
@@ -9,7 +9,8 @@ const userSchema = new Schema({
     mail: {type: String, index: true, required: true, unique: true},
     age: Number,
     role: {type: String, enum: ['user','admin'], default: 'user'},
-    password: {type: String, required: true}
+    password: {type: String, required: true},
+    cart: {type: Types.ObjectId, ref: "carts"}
 })
 
 export const userModel = model(userCollection, userSchema)

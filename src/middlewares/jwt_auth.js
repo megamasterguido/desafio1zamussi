@@ -1,6 +1,6 @@
-import { userModel } from "../models/user.model.js"
+import { userModel } from "../dao/Mongo/models/user.model.js"
 import jwt from "jsonwebtoken"
-import "dotenv/config.js"
+import config from ".././config.js"
 
 export default (req, res, next) => {
     const auth = req.headers.authorization
@@ -13,7 +13,7 @@ export default (req, res, next) => {
     const token = auth.split(' ')[1]
     jwt.verify(
         token,
-        process.env.JWT_SECRET,
+        config.jwt,
         async(error,credentials) => {
             if(error) {
                 return res.json({

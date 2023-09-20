@@ -1,5 +1,4 @@
 import { compareSync } from 'bcrypt'
-import { userModel } from '../models/user.model.js'
 
 export default async function isValidPassword(req, res, next) {
     
@@ -16,15 +15,9 @@ export default async function isValidPassword(req, res, next) {
             return next()
         }
 
-        return res.status(400).json({
-            success: false,
-            error: 'Contraseña incorrecta'
-        })
+        return res.sendUserError('Contraseña incorrecta')
     }
     else{
-        return res.status(404).json({
-            success: false,
-            error: 'Usuario no encontrado.'
-        })
+        return res.sendUserError('Usuario no encontrado.', 404)
     }
 }

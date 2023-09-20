@@ -1,0 +1,37 @@
+[
+  {
+    "_id": 1,
+    "first_name": "Guido",
+    "last_name": "Zamussi",
+    "photo": "https://th.bing.com/th/id/R.94c64f741c9a6330d65ddbf64c6db5d5?rik=nZgvjD3E4QIYkw&pid=ImgRaw&r=0",
+    "mail": "guido@guido.comaa",
+    "age": 23,
+    "password": "$2b$10$HrZT2XHL2ProDzgnzqPsBuzgWjXNvC40mBnI65oGxScT51YfToYtG"
+  },
+  {
+    "_id": 3,
+    "first_name": "Guido",
+    "last_name": "Zamussi",
+    "photo": "https://th.bing.com/th/id/R.94c64f741c9a6330d65ddbf64c6db5d5?rik=nZgvjD3E4QIYkw&pid=ImgRaw&r=0",
+    "mail": "guido@guido.coma",
+    "age": 23,
+    "cart": {
+      "_id": 4,
+      "products": []
+    }
+  },
+  {
+    "_id": 4,
+    "first_name": "Admin",
+    "last_name": "Admin",
+    "photo": "https://th.bing.com/th/id/R.94c64f741c9a6330d65ddbf64c6db5d5?rik=nZgvjD3E4QIYkw&pid=ImgRaw&r=0",
+    "mail": "admin@admin.admin",
+    "age": 23,
+    "role": "admin",
+    "password": "$2b$10$YBaJalrpL5MdylWBf4dYFO2rnxvycj3Gc9ltKHuz5pnP46OyAMEoy",
+    "cart": {
+      "_id": 5,
+      "products": []
+    }
+  }
+]
