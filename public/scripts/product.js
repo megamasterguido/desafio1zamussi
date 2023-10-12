@@ -16,7 +16,19 @@ async function agregar_al_carrito(cod, units){
             .catch(err => console.error(err))
     }
     else{
-        alert("Para agregar articulos al carrito debe iniciar sesion.")
+        let admin = await fetch("http://localhost:8080/api/auth/current")
+            .then(resp => resp.json())
+            .then(resp => resp.success)
+            .catch(err => console.error(err))
+        
+        console.log(admin)
+
+        if(admin){
+            alert("Los administradoes no pueden comprar.")
+        }
+        else{
+            alert("Para agregar articulos al carrito debe iniciar sesion.")
+        }
     }
 }
 

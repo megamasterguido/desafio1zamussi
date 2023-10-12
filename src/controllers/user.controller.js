@@ -1,4 +1,5 @@
-import { userService } from "../service/index.js";
+import { userService } from "../service.js";
+import UserDTO from "../dao/dto/user.dto.js";
 
 class UserController{
     constructor(){
@@ -46,7 +47,8 @@ class UserController{
 
     current = async (req, res) => {
         try{
-            return res.sendSuccess(req.user, 201)
+            const usuario = new UserDTO(req.user)
+            return res.sendSuccess(usuario, 201)
         }
         catch(error){
             return res.sendServerError(error)

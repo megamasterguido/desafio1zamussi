@@ -1,4 +1,4 @@
-import { cartService } from "../service/index.js";
+import { cartService } from "../service.js";
 
 class CartController{
     constructor(){
@@ -115,6 +115,19 @@ class CartController{
             return res.sendSuccess("Carrito " + cid + " borrado exitosamente")
         }
         catch(error){            
+            return res.sendServerError(error)
+        }
+    }
+
+    purchase = async (req, res) => {
+        let {cid} = req.params
+        let {purchase_datetime, amount, purchaser} = req.body
+        try {
+            let resp = await this.cartService.purchase(purchase_datetime, amount, purchaser, cid)
+            console.log("CONTROLLER RESP:", resp)
+            return res.sendSuccess(resp)
+        }
+        catch(error) {
             return res.sendServerError(error)
         }
     }

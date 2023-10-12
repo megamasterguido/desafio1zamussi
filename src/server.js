@@ -1,14 +1,11 @@
 import app from "./app.js";
 import { Server } from "socket.io";
-import mongoose from "mongoose";
 import config from "./config.js";
 
 const puerto = config.port
 
 let http_server = app.listen(puerto)
 let socket_server = new Server(http_server)
-
-mongoose.connect(config.link_mongo)
 
 let chat = []
 let cart_id

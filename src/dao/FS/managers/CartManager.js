@@ -16,8 +16,10 @@ export default class CartManager{
     constructor(){
         this.carts = []
         this.path = "src/dao/FS/data/carts.json"
+        this.ticketPath = "src/dao/FS/data/tickets.json"
         this.lastId = 0
-        this.ks = this.init(this.path)
+        this.ticketLastId = 0
+        this.init(this.path)
     }
 
     init(path){
@@ -40,6 +42,31 @@ export default class CartManager{
         }
         else{
             fs.writeFileSync(path, "[]")
+            resp = "Archivo creado"
+        }
+        return resp
+    }
+
+    initTickets(ticketPath){
+        let file = fs.existsSync(ticketPath)
+        let resp
+        if(file){
+            let archivo = fs.readFileSync(ticketPath, "UTF-8")
+            try{
+                this.tickets = JSON.parse(archivo)
+                resp = "Datos recuperados"
+                this.tickets.forEach(ticket => {
+                    if(ticket._id >= this.ticketLastId){
+                        this.ticketLastId = ticket._id
+                    }
+                })
+            }
+            catch{
+                resp = "Datos irrecuperables"
+            }
+        }
+        else{
+            fs.writeFileSync(ticketPath, "[]")
             resp = "Archivo creado"
         }
         return resp
@@ -113,7 +140,6 @@ export default class CartManager{
                     else{
                         carrito.products.push({_id: pid, units: parseInt(units)})
                     }
-                    products.updateProduct(pid, {stock: parseInt(prod.stock) - parseInt(units)})
                     fs.writeFileSync(this.path, JSON.stringify(this.carts,null,2))
                     resp = carrito
                 }
@@ -149,12 +175,9 @@ export default class CartManager{
                     }
                     fs.writeFileSync(this.path, JSON.stringify(this.carts,null,2))
                     resp = carrito
-                    if(prod){
-                        products.updateProduct(pid, {stock: parseInt(prod.stock) + parseInt(units)})
-                    }
-                    else{
+                    if(!prod){
                         resp = "No se pudo encontrar el articulo en la base de datos, pero se retiro igualmente del carrito."
-                        }
+                    }
                 }
                 else{
                     resp = "No hay tantas unidades del producto en el carrito"
@@ -184,5 +207,40 @@ export default class CartManager{
         });
         this.carts.splice(this.carts.indexOf(carrito),1)
         fs.writeFileSync(this.path, JSON.stringify(this.carts,null,2))
+    }
+
+    purchase = async (purchase_datetime, amount, purchaser, cid) => {
+        let total = amount
+        let cart = this.carts.find(cart => cart._id == cid)
+        let prod
+        let prods = []
+        let ticket
+
+        for(let i = 0; i < cart.products.length; i++){
+            prod = cart.products[i]
+            if(prod.units > prod._id.stock){
+                total -= prod.units * prod._id.price
+                prods.push({_id:prod._id._id, units:prod.units})
+            }
+            else{
+                products.updateProduct(prod._id._id, {stock: parseInt(prod._id.stock) - parseInt(prod.units)})
+            }
+        }
+
+        cart.products = prods
+
+        this.ticketLastId++
+
+        ticket = {
+            _id: this.ticketLastId,
+            purchase_datetime: purchase_datetime,
+            amount: total,
+            purchaser: purchaser
+        }
+
+        fs.writeFileSync(this.path, JSON.stringify(this.carts,null,2))
+        fs.writeFileSync(this.ticketPath, JSON.stringify(this.tickets,null,2))
+
+        return ticket
     }
 }

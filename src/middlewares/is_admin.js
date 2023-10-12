@@ -1,6 +1,6 @@
 export default (req, res, next) => {
-    if(req.session.role == 1){
+    if(req.user.role == 'admin'){
         return next()
     }
-    return res.sendUserError("Usuario no autorizado", 401)
+    return res.status(401).json({success:false, error:"Usuario no autorizado"})
 }

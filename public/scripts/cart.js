@@ -30,10 +30,10 @@ socket.on("cart_res", async (data) => {
     }
 })
 
+let total = document.getElementById("total")
 
 async function calcular_total(){
     if(cart_id){
-        let total = document.getElementById("total")
         await fetch("http://localhost:"+ port +"/api/carts/bills/" + cart_id)
             .then(resp=>resp.json())
             .then(resp => total.innerText = '$' + resp.response[0].total)
@@ -93,4 +93,35 @@ async function cart_item(item){
     </div>`
 
     return resp
+}
+
+let comprar = document.getElementById("finalizar_compra")
+comprar.addEventListener("click", purchase)
+
+async function purchase(){
+    let purchase_datetime = new Date()
+    let amount = parseInt(total.innerText.substr(1, total.innerText.length))
+    let purchaser = await fetch("http://localhost:8080/api/auth/current").then(resp => resp.json()).then(resp => resp.response.mail).catch(err => console.error(err))
+
+    let ticket = {
+        purchase_datetime: purchase_datetime,
+        amount: amount,
+        purchaser: purchaser
+        }
+
+        console.log(cart_id)
+
+    let resp = await fetch("http://localhost:8080/api/" + cart_id + "/purchase",
+        {
+        method:"POST",
+        body: JSON.stringify(ticket)
+        }
+    )
+        .then(resp => resp.json())
+        .then(resp => {
+            console.log(resp)
+            return resp.response})
+        .catch(err => console.error(err))
+
+    console.log(resp)
 }

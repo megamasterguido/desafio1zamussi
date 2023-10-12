@@ -11,7 +11,6 @@ export default async function isValidPassword(req, res, next) {
             
         if (verified) {
             req.session.mail = user.mail
-            req.session.role = user.role
             return next()
         }
 

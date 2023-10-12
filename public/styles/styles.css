@@ -230,6 +230,11 @@ main #pie_total {
 main #pie_total span {
   padding-inline: 10vw;
 }
+main #finalizar_compra {
+  position: absolute;
+  left: 5vw;
+  font-size: xx-large;
+}
 
 .product {
   display: flex;

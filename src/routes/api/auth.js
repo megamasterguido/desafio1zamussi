@@ -14,7 +14,7 @@ class UserRouter extends CustomRouter{
     init(){
         this.post(
             '/register',
-            ['user'],
+            [],
             register_validator,
             register_password_validator,
             createHash,
@@ -25,7 +25,7 @@ class UserRouter extends CustomRouter{
     
         this.post(
             '/login',
-            ['user'],
+            [],
             login_validator,
             register_password_validator,
             passport.authenticate('login',{}),
@@ -36,14 +36,13 @@ class UserRouter extends CustomRouter{
     
         this.post(
             '/logout',
-            ['user'],
-            passport_call('jwt'),
+            [],
             userController.logout
         )
     
         this.get(
             '/',
-            ['user'],
+            [],
             async (req, res) => {
                 try{
                     let resp = {
@@ -59,28 +58,28 @@ class UserRouter extends CustomRouter{
         )
     
         this.get('/github',
-            ['user'],
+            [],
             passport.authenticate('github',{ scope:['user:email'] }),
             userController.github
         )
     
         this.get(
             '/github/callback', //endpoint
-            ['user'],    
+            [],    
             passport.authenticate('github',{ failureRedirect:'/api/auth/fail-register-github' }),   //middleware con estrategia de auth de github
             jwt_generate,
             userController.githubCallBack
         )
     
         this.get('/fail-register-github',
-            ['user'],    
+            [],    
             userController.githubFail
             )
     
     
         this.get(
             '/current',
-            ['user'],    
+            [],    
             current_check,
             passport_call('current'),
             userController.current

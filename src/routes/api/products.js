@@ -5,12 +5,12 @@ import productController from "../../controllers/product.controller.js"
 class ProductRouter extends CustomRouter{
     init(){
         this.get('/',
-            ['user'],
+            [],
             productController.getProducts
         )
 
         this.get('/:pid',
-            ['user'],
+            [],
             productController.getProduct
         )
 
@@ -20,12 +20,12 @@ class ProductRouter extends CustomRouter{
         )
 
         this.put('/:pid',
-            ['user'],
+            ['admin'],
             productController.updateProduct
         )
 
         this.delete('/:pid',
-            ['user'],
+            ['admin'],
             productController.deleteProduct
             )
     }

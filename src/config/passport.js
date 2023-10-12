@@ -3,10 +3,8 @@ import { Strategy } from 'passport-local'
 import GHStrategy from 'passport-github2'
 import passport from 'passport'
 import jwt from 'passport-jwt'
-import authDaoMongo from '../dao/Mongo/classes/authDao.js'
 import userController from '../controllers/user.controller.js'
 
-const authDao = new authDaoMongo()
 const JWTStrategy = jwt.Strategy
 
 export default function(){

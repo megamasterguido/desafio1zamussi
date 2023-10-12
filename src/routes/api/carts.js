@@ -5,22 +5,22 @@ class CartRouter extends CustomRouter{
     init(){
         this.get(
             '/bills/:cid',
-            ['user'],
+            [],
             cartController.getBill
         )
         
         this.get('/',
-            ['user'],
+            [],
             cartController.getCarts
             )
         
         this.get('/:cid',
-            ['user'],
+            [],
             cartController.getCart
             )
         
         this.post('/',
-            ['user'],
+            [],
             cartController.addCart
             )
         
@@ -35,8 +35,13 @@ class CartRouter extends CustomRouter{
             )
 
         this.delete("/:cid",
-            ['user'],
+            [],
             cartController.deleteCart
+        )
+
+        this.post('/:cid/purchase',
+            ['user'],
+            cartController.purchase
         )
     }
 }

@@ -6,11 +6,20 @@ function message(name, mess){
     return resp
 }
 
-function send(mess){
+async function send(mess){
+    
+    let rol = await fetch("http://localhost:8080/api/auth/current").then(resp => resp.json()).then(resp => resp.response.role).catch(err => console.error(err))
+
     if (mess.key === "Enter") {
-        socket.emit("new_message", {name:clientName, mess:new_message.value});
-        new_message.value = ''
+        if(rol != 'admin'){
+            socket.emit("new_message", {name:clientName, mess:new_message.value});
+            new_message.value = ''
+        }
+        else{
+            alert("Los administradores no pueden escribir en el chat.")
+        }
     }
+
 }
 
 let new_message = document.getElementById("clientMessage")

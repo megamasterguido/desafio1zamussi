@@ -1,10 +1,12 @@
 import { cartModel } from "../models/cart.model.js";
 import { productModel } from "../models/product.model.js";
 import {Types} from 'mongoose'
+import { ticketModel } from "../models/ticket.model.js";
 
 class CartDaoMongo{
     constructor(){
         this.cartModel = cartModel
+        this.ticketModel = ticketModel
     }
 
     getCarts = async (limit) => {
@@ -69,7 +71,6 @@ class CartDaoMongo{
                     else{
                         carrito.products.push({_id: pid, units: parseInt(units)})
                     }
-                    await productModel.findByIdAndUpdate(pid,{stock: parseInt(prod.stock) - parseInt(units)})
                 }
                 else{
                     resp = "Carrito no encontrado"
@@ -107,14 +108,9 @@ class CartDaoMongo{
                         products: carrito.products
                     },
                     {new: true})
-                    if(prod){
-                        await productModel.findByIdAndUpdate(pid,{
-                            stock: prod.stock + parseInt(units)
-                        })
-                    }
-                    else{
+                    if(!prod){
                         resp = "No se pudo encontrar el articulo en la base de datos, pero se retiro igualmente del carrito."
-                        }
+                    }
                 }
                 else{
                     resp = "No hay tantas unidades del producto en el carrito"
@@ -145,6 +141,34 @@ class CartDaoMongo{
                 )
         })
         await cartModel.findByIdAndDelete(cid)
+    }
+
+    purchase = async (purchase_datetime, amount, purchaser, cid) => {
+        let total = amount
+        let cart = cartModel.findById(cid)
+        let prod
+        let prods = []
+        for(let i = 0; i < cart.products.length; i++){
+            prod = cart.products[i]
+            if(prod.units > prod._id.stock){
+                total -= prod.units * prod._id.price
+                prods.push({_id:prod._id._id, units:prod.units})
+            }
+            else{
+                await productModel.findByIdAndUpdate(prod._id._id,{stock: parseInt(prod._id.stock) - parseInt(prod.units)})
+            }
+        }
+        cartModel.findByIdAndUpdate(cid, {products: prods})
+        
+        let resp = await ticketModel.create({
+            purchase_datetime: purchase_datetime,
+            amount: total,
+            purchaser: purchaser
+        })
+
+        console.log("DAO RESP:", resp)
+
+        return resp
     }
 }
 

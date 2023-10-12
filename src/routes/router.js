@@ -1,6 +1,7 @@
 import { Router } from "express";
 import config from ".././config.js";
 import { userModel } from "../dao/Mongo/models/user.model.js";
+import jwt from 'jsonwebtoken'
 
 export default class CustomRouter{
     constructor(){
@@ -38,12 +39,11 @@ export default class CustomRouter{
     }
 
     handlePolicies = policies => (req, res, next) => {
-        if(policies[0] === "user") return next()
+        if(!policies.length) return next()
 
-        const authHeaders = req.headers.authorization
-        if(!authHeaders) return res.sendUserError("Error de autorizacion", 401)
+        const {token} = req.cookies
+        if(!token) return res.sendUserError("Error de autenticacion", 401)
 
-        const token = authHeaders.split(" ")[1]
         jwt.verify(
             token,
             config.jwt,
@@ -53,9 +53,28 @@ export default class CustomRouter{
                 }
                 let user = await userModel.findOne({ mail:credentials.mail })
                 req.user = user
-                return next()
             }
         )
+
+        switch (policies[0]) {
+            case "user":
+                if(req.user.role == "user"){
+                    return next()
+                }
+                else{
+                    return res.sendUserError("Error de autorizacion", 401)
+                }
+            case "admin":    
+                if(req.user.role == "admin"){
+                    return next()
+                }
+                else{
+                    return res.sendUserError("Error de autorizacion", 401)
+                }
+        
+            default:
+                return res.sendUserError("Error de autorizacion", 401)
+        }
     }
 
     get(path, policies, ...callbacks){
